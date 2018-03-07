@@ -1,0 +1,24 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.baikaleg.v3.popularmovies2.ui.movies.MovieItemViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{()->viewmodel.movieClicked()}">
+
+        <ImageView
+            android:id="@+id/movie_item_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/cd_poster_of_movie"
+            image="@{viewmodel.url}"
+            height="@{viewmodel.height}"
+            width="@{viewmodel.wight}"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

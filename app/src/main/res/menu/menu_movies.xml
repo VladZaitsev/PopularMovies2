@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.baikaleg.v3.popularmovies2.ui.movies.MoviesActivity">
+    <group android:id="@+id/movies_group"
+        android:checkableBehavior="single">
+        <item android:id="@+id/menu_popular"
+            android:title="@string/popular"/>
+        <item android:id="@+id/menu_top_rated"
+            android:title="@string/top_rated"/>
+        <item android:id="@+id/menu_favorite"
+            android:title="@string/favorite"/>
+    </group>
+</menu>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.baikaleg.v3.popularmovies.ui.movies.MoviesFragment"
+    tools:showIn="@layout/activity_movies">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="view"
+            type="com.baikaleg.v3.popularmovies2.ui.movies.MoviesFragment" />
+
+        <variable
+            name="viewmodel"
+            type="com.baikaleg.v3.popularmovies2.ui.movies.MoviesViewModel" />
+    </data>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+
+        android:id="@+id/moviesRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:onRefresh="@{viewmodel}"
+        app:refreshing="@{viewmodel.dataLoading}">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/movies_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:items="@{viewmodel.items}" />
+
+            <TextView
+                android:id="@+id/movies_no_internet_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/side_margin"
+                android:layout_marginStart="@dimen/side_margin"
+                android:text="@string/no_internet"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+</layout>

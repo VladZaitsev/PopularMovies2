@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="columns_portrait_mode">2</integer>
+    <integer name="rows_portrait_mode">2</integer>
+
+    <integer name="columns_landscape_mode">4</integer>
+    <integer name="rows_landscape_mode">1</integer>
+</resources>

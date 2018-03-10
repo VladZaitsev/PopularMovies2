@@ -1,15 +1,24 @@
 package com.baikaleg.v3.popularmovies2;
 
 import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
+import android.support.annotation.NonNull;
 
+import com.baikaleg.v3.popularmovies2.dagger.scopes.ActivityScoped;
+import com.baikaleg.v3.popularmovies2.data.MovieDataSource;
+import com.baikaleg.v3.popularmovies2.data.Repository;
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
+
+import javax.inject.Inject;
 
 /**
  * Abstract class for View Models that expose a single {@link Movie}.
  */
-public abstract class MovieViewModel extends BaseObservable {
+
+public abstract class MovieViewModel extends BaseObservable
+        implements MovieDataSource.GetMovieCallback {
 
     public final ObservableField<String> title = new ObservableField<>();
 
@@ -21,7 +30,11 @@ public abstract class MovieViewModel extends BaseObservable {
 
     private final ObservableField<Movie> movieObservable = new ObservableField<>();
 
-    public MovieViewModel() {
+    private Repository repository;
+
+    public MovieViewModel(@NonNull Repository repository) {
+        this.repository = repository;
+
         movieObservable.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable observable, int i) {
@@ -36,6 +49,27 @@ public abstract class MovieViewModel extends BaseObservable {
         });
     }
 
+    @Bindable
+    public boolean getFavorite() {
+        Movie movie = movieObservable.get();
+        return movie.isFavorite();
+    }
+
+    public void setFavorite(boolean favorite) {
+        Movie movie = movieObservable.get();
+        repository.markMovieAsFavorite(movie.getId(), movie.getTitle(), favorite);
+    }
+
+    @Override
+    public void onDataNotAvailable() {
+
+    }
+
+    @Override
+    public void onMovieLoaded(Movie movie) {
+
+    }
+
     public void setMovie(Movie movie) {
         movieObservable.set(movie);
     }
@@ -43,6 +77,4 @@ public abstract class MovieViewModel extends BaseObservable {
     public int getMovieId() {
         return movieObservable.get().getId();
     }
-
-
 }

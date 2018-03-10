@@ -26,6 +26,8 @@ public class Movie {
     @Expose
     private double voteAverage;
 
+    private boolean isFavorite;
+
     public Movie(int id, String title) {
         this.id = id;
         this.title = title;
@@ -62,5 +64,13 @@ public class Movie {
 
     public double getVoteAverage() {
         return voteAverage;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }

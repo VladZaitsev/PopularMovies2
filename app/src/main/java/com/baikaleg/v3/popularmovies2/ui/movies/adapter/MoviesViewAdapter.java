@@ -40,7 +40,7 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewHolder> {
     @Override
     public void onBindViewHolder(MoviesViewHolder holder, int position) {
         Movie movie = movies.get(position);
-        final MovieItemViewModel viewModel = new MovieItemViewModel(viewHeight,viewWidth);
+        final MovieItemViewModel viewModel = new MovieItemViewModel(null,viewHeight,viewWidth);
         viewModel.setNavigator(itemNavigator);
         viewModel.setMovie(movie);
         holder.binding.setViewmodel(viewModel);

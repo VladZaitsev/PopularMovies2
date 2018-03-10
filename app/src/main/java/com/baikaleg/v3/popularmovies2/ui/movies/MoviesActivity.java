@@ -1,11 +1,12 @@
 package com.baikaleg.v3.popularmovies2.ui.movies;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 
 import com.baikaleg.v3.popularmovies2.R;
+import com.baikaleg.v3.popularmovies2.ui.details.DetailsActivity;
 
 import javax.inject.Inject;
 
@@ -58,7 +59,9 @@ public class MoviesActivity extends DaggerAppCompatActivity implements MovieItem
 
     @Override
     public void openMovieDetails(int id) {
-
+        Intent intent=new Intent(this, DetailsActivity.class);
+        intent.putExtra(DetailsActivity.EXTRA_MOVIE_ID,id);
+        startActivity(intent);
     }
 
     @SuppressWarnings("ConstantConditions")

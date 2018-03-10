@@ -19,6 +19,6 @@
             android:contentDescription="@string/cd_poster_of_movie"
             image="@{viewmodel.url}"
             height="@{viewmodel.height}"
-            width="@{viewmodel.wight}"/>
+            width="@{viewmodel.width}"/>
     </android.support.constraint.ConstraintLayout>
 </layout>

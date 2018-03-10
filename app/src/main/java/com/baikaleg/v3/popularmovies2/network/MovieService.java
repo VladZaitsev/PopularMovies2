@@ -12,12 +12,12 @@ import retrofit2.http.Path;
 
 public interface MovieService {
 
-    @GET("popular/?api_key=" + BuildConfig.API_KEY)
+    @GET("popular?api_key=" + BuildConfig.API_KEY)
     Flowable<MoviesResponse> getPopularMovies();
 
-    @GET("top_rated/?api_key=" + BuildConfig.API_KEY)
+    @GET("top_rated?api_key=" + BuildConfig.API_KEY)
     Flowable<MoviesResponse> getTopRatedMovies();
 
-    @GET("movie/{id}/?api_key=" + BuildConfig.API_KEY)
-    Flowable<Optional<Movie>> getMovie(@Path("id") int movieId);
+    @GET("{id}?api_key=" + BuildConfig.API_KEY)
+    Observable<Movie> getMovie(@Path("id") int movieId);
 }

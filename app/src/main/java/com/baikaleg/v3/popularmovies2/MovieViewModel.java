@@ -6,19 +6,17 @@ import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
-import com.baikaleg.v3.popularmovies2.dagger.scopes.ActivityScoped;
-import com.baikaleg.v3.popularmovies2.data.MovieDataSource;
 import com.baikaleg.v3.popularmovies2.data.Repository;
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
 
-import javax.inject.Inject;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Abstract class for View Models that expose a single {@link Movie}.
  */
 
-public abstract class MovieViewModel extends BaseObservable
-        implements MovieDataSource.GetMovieCallback {
+public abstract class MovieViewModel extends BaseObservable {
 
     public final ObservableField<String> title = new ObservableField<>();
 
@@ -27,6 +25,10 @@ public abstract class MovieViewModel extends BaseObservable
     public final ObservableField<String> date = new ObservableField<>();
 
     public final ObservableField<String> url = new ObservableField<>();
+
+    public final ObservableField<Double> voteAverage = new ObservableField<>();
+
+    public final ObservableField<Boolean> favorite = new ObservableField<>();
 
     private final ObservableField<Movie> movieObservable = new ObservableField<>();
 
@@ -44,9 +46,19 @@ public abstract class MovieViewModel extends BaseObservable
                     overview.set(movie.getOverview());
                     date.set(movie.getReleaseDate());
                     url.set(movie.getPosterPath());
+                    voteAverage.set(movie.getVoteAverage());
+                    favorite.set(movie.isFavorite());
                 }
             }
         });
+    }
+
+    public void start(int movieId) {
+        repository.getMovie(movieId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(movie -> movieObservable.set(movie),
+                        throwable -> movieObservable.set(null));
     }
 
     @Bindable
@@ -56,17 +68,15 @@ public abstract class MovieViewModel extends BaseObservable
     }
 
     public void setFavorite(boolean favorite) {
+        this.favorite.set(favorite);
+
         Movie movie = movieObservable.get();
         repository.markMovieAsFavorite(movie.getId(), movie.getTitle(), favorite);
+
+        notifyPropertyChanged(BR.favorite);
     }
 
-    @Override
-    public void onDataNotAvailable() {
-
-    }
-
-    @Override
-    public void onMovieLoaded(Movie movie) {
+    public void setMovieId(int id) {
 
     }
 

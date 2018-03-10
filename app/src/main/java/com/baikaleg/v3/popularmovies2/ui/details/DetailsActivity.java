@@ -1,31 +1,70 @@
 package com.baikaleg.v3.popularmovies2.ui.details;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.view.MenuItem;
 
 import com.baikaleg.v3.popularmovies2.R;
 
-public class DetailsActivity extends AppCompatActivity {
+import javax.inject.Inject;
+
+import dagger.android.support.DaggerAppCompatActivity;
+
+public class DetailsActivity extends DaggerAppCompatActivity implements DetailsNavigator {
+
+    public static final String EXTRA_MOVIE_ID = "MOVIE_ID";
+
+    @Inject
+    DetailsViewModel viewModel;
+
+    @Inject
+    DetailsActivityFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        ActionBar actionBar = this.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
+
+        DetailsActivityFragment detailsFragment =
+                (DetailsActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        if (detailsFragment == null) {
+            detailsFragment = fragment;
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment, detailsFragment);
+            transaction.commit();
+        }
+        viewModel.setNavigator(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        viewModel.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onMovieMarked(boolean isFavorite) {
+        viewModel.setFavorite(isFavorite);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

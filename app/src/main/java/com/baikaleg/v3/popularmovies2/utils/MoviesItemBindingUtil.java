@@ -1,4 +1,4 @@
-package com.baikaleg.v3.popularmovies2.ui.movies.adapter;
+package com.baikaleg.v3.popularmovies2.utils;
 
 import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;

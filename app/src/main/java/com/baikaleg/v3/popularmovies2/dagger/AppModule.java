@@ -3,8 +3,10 @@ package com.baikaleg.v3.popularmovies2.dagger;
 import android.app.Application;
 import android.content.Context;
 
+import com.baikaleg.v3.popularmovies2.dagger.modules.DetailsModule;
 import com.baikaleg.v3.popularmovies2.dagger.modules.MoviesModule;
 import com.baikaleg.v3.popularmovies2.dagger.scopes.ActivityScoped;
+import com.baikaleg.v3.popularmovies2.ui.details.DetailsActivity;
 import com.baikaleg.v3.popularmovies2.ui.movies.MoviesActivity;
 
 import dagger.Binds;
@@ -21,5 +23,7 @@ public interface AppModule {
     @ContributesAndroidInjector(modules = {MoviesModule.class})
     MoviesActivity moviesActivityInjector();
 
-
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = {DetailsModule.class})
+    DetailsActivity detailsActivityInjector();
 } 

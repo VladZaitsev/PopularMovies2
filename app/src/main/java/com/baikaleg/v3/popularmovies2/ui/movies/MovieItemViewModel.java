@@ -41,7 +41,7 @@ public class MovieItemViewModel extends MovieViewModel {
     }
 
     @Bindable
-    public int getWight() {
+    public int getWidth() {
         return width;
     }
 }

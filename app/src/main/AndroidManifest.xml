@@ -22,15 +22,20 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.details.DetailsActivity"
+            android:label="@string/title_activity_details"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.movies.MoviesActivity" />
+        </activity>
+
         <provider
             android:name=".data.source.MovieContentProvider"
             android:authorities="com.baikaleg.v3.popularmovies2"
             android:exported="false" />
 
-        <activity
-            android:name=".ui.details.DetailsActivity"
-            android:label="@string/title_activity_details"
-            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

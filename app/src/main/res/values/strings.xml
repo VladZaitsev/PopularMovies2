@@ -13,6 +13,8 @@
     <string name="no_internet">No internet connection</string>
 
     <string name="type_movies_key">movies_type</string>
+    <string name="type_movie_key">movie_type</string>
+
     <string name="title_activity_details">DetailsActivity</string>
     <string name="action_settings">Settings</string>
 </resources>

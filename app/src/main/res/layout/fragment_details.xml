@@ -1,10 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.baikaleg.v3.popularmovies2.ui.details.DetailsActivityFragment"
-    tools:showIn="@layout/activity_details">
+<layout>
 
-</android.support.constraint.ConstraintLayout>
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="view"
+            type="com.baikaleg.v3.popularmovies2.ui.details.DetailsActivityFragment" />
+
+        <variable
+            name="viewmodel"
+            type="com.baikaleg.v3.popularmovies2.ui.details.DetailsViewModel" />
+    </data>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.baikaleg.v3.popularmovies.ui.details.DetailsFragment"
+        tools:showIn="@layout/activity_details">
+
+        
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/details_title_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/details_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="@dimen/details_general_margin"
+                    android:text="@{viewmodel.title}"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
+                    android:textColor="@android:color/white" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/details_data_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/details_title_layout">
+
+                <ImageView
+                    android:id="@+id/details_img"
+                    image="@{viewmodel.url}"
+                    height="@{viewmodel.height}"
+                    width="@{viewmodel.width}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="@dimen/details_general_margin"
+                    android:layout_marginStart="@dimen/details_general_margin"
+                    android:layout_marginTop="@dimen/details_general_margin"
+                    android:contentDescription="@string/cd_poster_of_movie" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/details_general_margin"
+                    android:layout_marginStart="@dimen/details_general_margin"
+                    android:layout_toEndOf="@id/details_img"
+                    android:layout_toRightOf="@+id/details_img"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/details_date_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/details_general_margin"
+                        android:text="@{viewmodel.date}"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/details_rating_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/details_top_margin"
+                        android:text="@{@string/vote_average(viewmodel.voteAverage)}"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/details_overview_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/details_general_margin"
+                android:layout_marginStart="@dimen/details_general_margin"
+                android:layout_marginTop="@dimen/details_general_margin"
+                android:text="@{viewmodel.overview}"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                app:layout_constraintTop_toBottomOf="@+id/details_data_layout" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/details_overview_tv" />
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+</layout>
+

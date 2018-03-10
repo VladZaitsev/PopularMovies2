@@ -11,23 +11,9 @@ import io.reactivex.Observable;
 
 public interface MovieDataSource {
 
-    interface LoadMoviesCallback {
+    Observable<List<Movie>> getMovies(MoviesFilterType type);
 
-        void onMoviesLoaded(List<Movie> movies);
-
-        void onDataNotAvailable();
-    }
-
-    interface GetMovieCallback {
-
-        void onMovieLoaded(Movie movie);
-
-        void onDataNotAvailable();
-    }
-
-   Observable<List<Movie>> getMovies(MoviesFilterType type);
-
-    Flowable<Optional<Movie>> getMovie( int id);
+    Observable<Movie> getMovie(int id);
 
     void markMovieAsFavorite(int id, String title, boolean favorite);
 }

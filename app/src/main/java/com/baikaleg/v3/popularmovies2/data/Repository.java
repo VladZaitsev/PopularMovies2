@@ -11,7 +11,6 @@ import com.baikaleg.v3.popularmovies2.data.source.MovieContract;
 import com.baikaleg.v3.popularmovies2.data.source.MovieContract.MovieEntry;
 import com.baikaleg.v3.popularmovies2.network.MovieApi;
 import com.baikaleg.v3.popularmovies2.ui.movies.MoviesFilterType;
-import com.google.common.base.Optional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,6 @@ import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
 public class Repository implements MovieDataSource {
@@ -52,15 +50,8 @@ public class Repository implements MovieDataSource {
     }
 
     @Override
-    public Flowable<Optional<Movie>> getMovie(int id) {
-        return movieApi.createService()
-                .getMovie(id)
-                .doOnNext(movieOptional -> {
-                    if (movieOptional.isPresent()) {
-                        Movie movie = movieOptional.get();
-                        movie.setFavorite(true);
-                    }
-                });
+    public Observable<Movie> getMovie(int id) {
+        return movieApi.createService().getMovie(id);
     }
 
     @Override
@@ -86,11 +77,8 @@ public class Repository implements MovieDataSource {
                 int id = cursor.getInt(cursor.getColumnIndex(MovieEntry.ID));
                 movieApi.createService()
                         .getMovie(id)
-                        .doOnNext(movieOptional -> {
-                            if (movieOptional.isPresent()) {
-                                Movie movie = movieOptional.get();
+                        .doOnNext(movie -> {
                                 movies.add(movie);
-                            }
                         });
                 cursor.moveToNext();
             }

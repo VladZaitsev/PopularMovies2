@@ -3,7 +3,6 @@ package com.baikaleg.v3.popularmovies2.ui.movies;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -105,11 +104,6 @@ public class MoviesFragment extends DaggerFragment {
         return true;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
     @NonNull
     private MoviesViewAdapter createAdapter() {
         TypedValue tv = new TypedValue();
@@ -120,7 +114,7 @@ public class MoviesFragment extends DaggerFragment {
         int imageHeight = (getResources().getDisplayMetrics().heightPixels - actionBarHeight) / rows;
         int imageWidth = getResources().getDisplayMetrics().widthPixels / columns;
 
-        MoviesViewAdapter adapter = new MoviesViewAdapter((MoviesActivity) getActivity(),getActivity());
+        MoviesViewAdapter adapter = new MoviesViewAdapter((MoviesActivity) getActivity());
         adapter.setViewSize(imageWidth, imageHeight);
         adapter.refreshAdapter(moviesViewModel.items);
         return adapter;

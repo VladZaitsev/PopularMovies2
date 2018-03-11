@@ -1,12 +1,10 @@
 package com.baikaleg.v3.popularmovies2.ui.details;
 
-import android.content.Context;
 import android.databinding.Bindable;
 
 import com.baikaleg.v3.popularmovies2.MovieViewModel;
 import com.baikaleg.v3.popularmovies2.data.Repository;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 public class DetailsViewModel extends MovieViewModel {
@@ -14,8 +12,8 @@ public class DetailsViewModel extends MovieViewModel {
     private int height, width;
 
     @Inject
-    public DetailsViewModel(Repository repository, Context context) {
-        super(repository, context);
+    public DetailsViewModel(Repository repository) {
+        super(repository);
     }
 
     public void favoriteClicked() {

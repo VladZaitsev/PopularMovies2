@@ -1,12 +1,10 @@
 package com.baikaleg.v3.popularmovies2;
 
-import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.baikaleg.v3.popularmovies2.data.Repository;
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
@@ -35,10 +33,8 @@ public abstract class MovieViewModel extends BaseObservable {
     private final ObservableField<Movie> movieObservable = new ObservableField<>();
 
     private Repository repository;
-    private final Context context;
 
-    public MovieViewModel(@NonNull Repository repository, Context context) {
-        this.context = context;
+    public MovieViewModel(@Nullable Repository repository) {
         this.repository = repository;
 
         movieObservable.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
@@ -70,10 +66,6 @@ public abstract class MovieViewModel extends BaseObservable {
 
     @Bindable
     public boolean getFavorite() {
-       /* Movie movie = movieObservable.get();
-        if (movie!= null) {
-            return movie.isFavorite();
-        }*/
         return favorite.get();
     }
 
@@ -81,7 +73,7 @@ public abstract class MovieViewModel extends BaseObservable {
         this.favorite.set(favorite);
 
         Movie movie = movieObservable.get();
-        repository.markMovieAsFavorite(movie.getId(), movie.getTitle(), favorite);
+        repository.markMovieAsFavorite(movie.getId(), movie.getTitle(), movie.getPosterPath(), favorite);
 
         notifyPropertyChanged(BR.favorite);
     }

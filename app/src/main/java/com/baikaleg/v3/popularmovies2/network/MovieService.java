@@ -3,7 +3,6 @@ package com.baikaleg.v3.popularmovies2.network;
 import com.baikaleg.v3.popularmovies2.BuildConfig;
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.data.model.MoviesResponse;
-import com.google.common.base.Optional;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;

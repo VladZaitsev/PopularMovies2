@@ -13,12 +13,15 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
 
     private static final String TEXT_TYPE = " TEXT";
 
+    private static final String COMMA = ", ";
+
     private static final String INTEGER_TYPE = " INTEGER";
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + MovieEntry.TABLE_NAME + " (" +
                     MovieEntry.ID + INTEGER_TYPE + " PRIMARY KEY," +
-                    MovieEntry.TITLE + TEXT_TYPE +
+                    MovieEntry.TITLE + TEXT_TYPE + COMMA +
+                    MovieEntry.POSTER_PATH + TEXT_TYPE +
                     " )";
 
 

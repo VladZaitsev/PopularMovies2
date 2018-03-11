@@ -1,8 +1,5 @@
 package com.baikaleg.v3.popularmovies2.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -13,12 +10,12 @@ public class Movie {
     @SerializedName("title")
     @Expose
     private final String title;
+    @SerializedName("poster_path")
+    @Expose
+    private final String posterPath;
     @SerializedName("overview")
     @Expose
     private String overview;
-    @SerializedName("poster_path")
-    @Expose
-    private String posterPath;
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
@@ -28,18 +25,10 @@ public class Movie {
 
     private boolean isFavorite;
 
-    public Movie(int id, String title) {
+    public Movie(int id, String title, String posterPath) {
         this.id = id;
         this.title = title;
-    }
-
-    public Movie(Parcel in) {
-        id = in.readInt();
-        title = in.readString();
-        overview = in.readString();
-        posterPath = in.readString();
-        releaseDate = in.readString();
-        voteAverage = in.readDouble();
+        this.posterPath = posterPath;
     }
 
     public int getId() {

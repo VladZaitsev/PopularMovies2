@@ -1,6 +1,5 @@
 package com.baikaleg.v3.popularmovies2.data;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -22,7 +21,6 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 
 public class Repository implements MovieDataSource {
-
     private Context context;
     private MovieApi movieApi;
 
@@ -65,11 +63,10 @@ public class Repository implements MovieDataSource {
     }
 
     @Override
-    public void markMovieAsFavorite(int id, String title, boolean favorite) {
-       Uri uri = MovieContract.MovieEntry.CONTENT_URI;
-        //  Uri uri = ContentUris.withAppendedId(MovieEntry.CONTENT_URI, 3);
+    public void markMovieAsFavorite(int id, String title, String posterPath, boolean favorite) {
+        Uri uri = MovieContract.MovieEntry.CONTENT_URI;
         if (favorite) {
-            Movie movie = new Movie(id, title);
+            Movie movie = new Movie(id, title, posterPath);
             context.getContentResolver().insert(uri, getContentValues(movie));
         } else {
             String selection = MovieEntry.ID + " = ? ";
@@ -85,11 +82,13 @@ public class Repository implements MovieDataSource {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 int id = cursor.getInt(cursor.getColumnIndex(MovieEntry.ID));
-                movieApi.createService()
-                        .getMovie(id)
-                        .doOnNext(movie -> {
-                            movies.add(movie);
-                        });
+                String title = cursor.getString(cursor.getColumnIndex(MovieEntry.TITLE));
+                String posterPath = cursor.getString(cursor.getColumnIndex(MovieEntry.POSTER_PATH));
+
+                Movie movie = new Movie(id, title, posterPath);
+                movie.setFavorite(true);
+                movies.add(movie);
+
                 cursor.moveToNext();
             }
             return movies;
@@ -110,6 +109,7 @@ public class Repository implements MovieDataSource {
         ContentValues values = new ContentValues();
         values.put(MovieEntry.ID, movie.getId());
         values.put(MovieEntry.TITLE, movie.getTitle());
+        values.put(MovieEntry.POSTER_PATH, movie.getPosterPath());
         return values;
     }
 

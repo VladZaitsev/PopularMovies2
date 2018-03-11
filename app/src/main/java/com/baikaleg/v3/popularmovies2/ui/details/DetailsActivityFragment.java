@@ -2,7 +2,6 @@ package com.baikaleg.v3.popularmovies2.ui.details;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +10,6 @@ import android.view.ViewGroup;
 import com.baikaleg.v3.popularmovies2.R;
 import com.baikaleg.v3.popularmovies2.dagger.scopes.ActivityScoped;
 import com.baikaleg.v3.popularmovies2.databinding.FragmentDetailsBinding;
-import com.baikaleg.v3.popularmovies2.ui.movies.MoviesActivity;
-import com.baikaleg.v3.popularmovies2.ui.movies.adapter.MoviesViewAdapter;
 
 import javax.inject.Inject;
 

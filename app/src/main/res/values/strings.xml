@@ -1,21 +1,29 @@
 <resources>
-    <string name="app_name">PopularMovies2</string>
-    <string name="title_activity_movies">MoviesActivity</string>
 
+    <string name="app_name">Popular Movies</string>
+
+    <!-- urls-->
     <string name="base_url" translatable="false">https://api.themoviedb.org/3/movie/</string>
     <string name="image_base_url" translatable="false">https://image.tmdb.org/t/p/w185</string>
 
+    <!-- screen titles-->
     <string name="popular">Popular Movies</string>
     <string name="top_rated">Top Rated Movies</string>
     <string name="favorite">Favorite Movies</string>
-    <string name="vote_average">%1$s/10</string>
+    <string name="title_activity_details">Movie</string>
 
+    <!-- content descriptions-->
     <string name="cd_poster_of_movie">Movie poster</string>
     <string name="cd_favorite">Favorite</string>
-    <string name="no_internet">No internet connection</string>
 
+    <!-- keys-->
     <string name="type_movies_key">movies_type</string>
     <string name="type_movie_key">movie_type</string>
 
-    <string name="title_activity_details">DetailsActivity</string>
+    <!-- messages-->
+    <string name="no_movies">No movies</string>
+    <string name="no_internet">No internet connection</string>
+
+    <string name="vote_average">%1$s/10</string>
+
 </resources>

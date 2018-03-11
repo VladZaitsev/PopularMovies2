@@ -50,7 +50,7 @@ public class MoviesViewModel extends BaseObservable {
 
     @Bindable
     public boolean isEmpty() {
-        return items.isEmpty();
+        return !isDataLoadingError.get() && items.isEmpty();
     }
 
     void onDestroyed() {
@@ -99,5 +99,6 @@ public class MoviesViewModel extends BaseObservable {
     private void showError() {
         dataLoading.set(false);
         isDataLoadingError.set(true);
+        notifyPropertyChanged(BR.empty);
     }
 }

@@ -26,5 +26,7 @@ public class MovieContract {
         public static final String ID = "id";
 
         public static final String TITLE = "title";
+
+        public static final String POSTER_PATH = "posterPath";
     }
 }

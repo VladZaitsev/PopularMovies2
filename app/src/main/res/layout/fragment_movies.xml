@@ -38,7 +38,7 @@
                 app:items="@{viewmodel.items}" />
 
             <TextView
-                android:id="@+id/noMovies"
+                android:id="@+id/noMoviesError"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/details_top_margin"
@@ -46,6 +46,20 @@
                 android:text="@string/no_internet"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
                 android:visibility="@{viewmodel.isDataLoadingError? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/noMovies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/details_top_margin"
+                android:layout_marginStart="@dimen/details_top_margin"
+                android:text="@string/no_movies"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
+                android:visibility="@{viewmodel.empty? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

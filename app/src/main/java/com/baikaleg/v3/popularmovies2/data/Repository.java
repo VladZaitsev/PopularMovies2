@@ -1,5 +1,6 @@
 package com.baikaleg.v3.popularmovies2.data;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -51,34 +52,43 @@ public class Repository implements MovieDataSource {
 
     @Override
     public Observable<Movie> getMovie(int id) {
-        return movieApi.createService().getMovie(id);
+        return movieApi.createService().getMovie(id).map(movie -> {
+            String selection = MovieEntry.ID + " = ? ";
+            String[] selectionArgs = new String[]{Integer.toString(id)};
+            try (Cursor cursor = queryMovies(selection, selectionArgs)) {
+                if (cursor.getCount() != 0) {
+                    movie.setFavorite(true);
+                }
+                return movie;
+            }
+        });
     }
 
     @Override
     public void markMovieAsFavorite(int id, String title, boolean favorite) {
-        String stringId = Integer.toString(id);
-        Uri uri = MovieContract.MovieEntry.CONTENT_URI;
-        uri = uri.buildUpon().appendPath(stringId).build();
+       Uri uri = MovieContract.MovieEntry.CONTENT_URI;
+        //  Uri uri = ContentUris.withAppendedId(MovieEntry.CONTENT_URI, 3);
         if (favorite) {
             Movie movie = new Movie(id, title);
             context.getContentResolver().insert(uri, getContentValues(movie));
         } else {
-            context.getContentResolver().delete(uri, null, null);
+            String selection = MovieEntry.ID + " = ? ";
+            String[] selectionArgs = new String[]{Integer.toString(id)};
+            context.getContentResolver().delete(uri, selection, selectionArgs);
         }
     }
-
 
     private Observable<List<Movie>> getFavoriteMovies() {
         return makeObservable(() -> {
             List<Movie> movies = new ArrayList<>();
-            Cursor cursor = queryMovies();
+            Cursor cursor = queryMovies(null, null);
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 int id = cursor.getInt(cursor.getColumnIndex(MovieEntry.ID));
                 movieApi.createService()
                         .getMovie(id)
                         .doOnNext(movie -> {
-                                movies.add(movie);
+                            movies.add(movie);
                         });
                 cursor.moveToNext();
             }
@@ -103,12 +113,12 @@ public class Repository implements MovieDataSource {
         return values;
     }
 
-    private Cursor queryMovies() {
+    private Cursor queryMovies(String selection, String[] selectionArgs) {
         return context.getContentResolver().query(
                 MovieEntry.CONTENT_URI,
                 null,
-                null,
-                null,
+                selection,
+                selectionArgs,
                 null
         );
     }

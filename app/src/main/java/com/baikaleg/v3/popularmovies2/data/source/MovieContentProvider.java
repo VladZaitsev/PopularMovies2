@@ -41,7 +41,7 @@ public class MovieContentProvider extends ContentProvider {
         Cursor retCursor;
         switch (match) {
             case MOVIES:
-                retCursor =  db.query(TABLE_NAME,
+                retCursor = db.query(TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -59,12 +59,12 @@ public class MovieContentProvider extends ContentProvider {
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         int match = uriMatcher.match(uri);
         Uri returnUri;
@@ -72,7 +72,7 @@ public class MovieContentProvider extends ContentProvider {
         switch (match) {
             case MOVIES:
                 long id = db.insert(TABLE_NAME, null, values);
-                if ( id > 0 ) {
+                if (id > 0) {
                     returnUri = ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, id);
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
@@ -88,28 +88,28 @@ public class MovieContentProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String s, String[] strings) {
-        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         int match = uriMatcher.match(uri);
-        int moviesDeleted;
+        int numRowsDeleted;
+        if (null == selection) selection = "1";
+
         switch (match) {
-            case MOVIE_WITH_ID:
-                String id = uri.getPathSegments().get(1);
-                moviesDeleted = db.delete(TABLE_NAME, "_id=?", new String[]{id});
+            case MOVIES:
+                numRowsDeleted = dbHelper.getWritableDatabase().delete(TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        if (moviesDeleted != 0) {
+        if (numRowsDeleted != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
 
-        return moviesDeleted;
+        return numRowsDeleted;
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
+    public int update(@NonNull Uri uri, ContentValues contentValues, String s, String[] strings) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 }

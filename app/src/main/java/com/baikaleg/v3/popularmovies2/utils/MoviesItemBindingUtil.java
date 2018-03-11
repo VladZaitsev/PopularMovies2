@@ -1,6 +1,7 @@
 package com.baikaleg.v3.popularmovies2.utils;
 
 import android.databinding.BindingAdapter;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.widget.ImageView;
@@ -23,5 +24,10 @@ public class MoviesItemBindingUtil {
                 .load(imageView.getContext().getString(R.string.image_base_url) + url)
                 .resize(width, height)
                 .into(imageView);
+    }
+
+    @BindingAdapter("imageResource")
+    public static void setImageDrawable(ImageView view, Drawable drawable) {
+        view.setImageDrawable(drawable);
     }
 }

@@ -1,9 +1,11 @@
 package com.baikaleg.v3.popularmovies2;
 
+import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 
 import com.baikaleg.v3.popularmovies2.data.Repository;
@@ -28,13 +30,15 @@ public abstract class MovieViewModel extends BaseObservable {
 
     public final ObservableField<Double> voteAverage = new ObservableField<>();
 
-    public final ObservableField<Boolean> favorite = new ObservableField<>();
+    public final ObservableField<Boolean> favorite = new ObservableField<>(false);
 
     private final ObservableField<Movie> movieObservable = new ObservableField<>();
 
     private Repository repository;
+    private final Context context;
 
-    public MovieViewModel(@NonNull Repository repository) {
+    public MovieViewModel(@NonNull Repository repository, Context context) {
+        this.context = context;
         this.repository = repository;
 
         movieObservable.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
@@ -48,6 +52,8 @@ public abstract class MovieViewModel extends BaseObservable {
                     url.set(movie.getPosterPath());
                     voteAverage.set(movie.getVoteAverage());
                     favorite.set(movie.isFavorite());
+
+                    notifyPropertyChanged(BR.favorite);
                 }
             }
         });
@@ -57,14 +63,18 @@ public abstract class MovieViewModel extends BaseObservable {
         repository.getMovie(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movie -> movieObservable.set(movie),
+                .subscribe(movieObservable::set,
                         throwable -> movieObservable.set(null));
     }
 
+
     @Bindable
     public boolean getFavorite() {
-        Movie movie = movieObservable.get();
-        return movie.isFavorite();
+       /* Movie movie = movieObservable.get();
+        if (movie!= null) {
+            return movie.isFavorite();
+        }*/
+        return favorite.get();
     }
 
     public void setFavorite(boolean favorite) {
@@ -76,15 +86,12 @@ public abstract class MovieViewModel extends BaseObservable {
         notifyPropertyChanged(BR.favorite);
     }
 
-    public void setMovieId(int id) {
-
-    }
 
     public void setMovie(Movie movie) {
         movieObservable.set(movie);
     }
 
-    public int getMovieId() {
+    protected int getMovieId() {
         return movieObservable.get().getId();
     }
 }

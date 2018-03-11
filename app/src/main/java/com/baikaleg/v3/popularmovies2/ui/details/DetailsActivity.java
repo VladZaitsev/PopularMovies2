@@ -12,7 +12,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 
-public class DetailsActivity extends DaggerAppCompatActivity implements DetailsNavigator {
+public class DetailsActivity extends DaggerAppCompatActivity  {
 
     public static final String EXTRA_MOVIE_ID = "MOVIE_ID";
 
@@ -43,18 +43,7 @@ public class DetailsActivity extends DaggerAppCompatActivity implements DetailsN
             transaction.replace(R.id.fragment, detailsFragment);
             transaction.commit();
         }
-        viewModel.setNavigator(this);
-    }
 
-    @Override
-    protected void onDestroy() {
-        viewModel.onDestroy();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onMovieMarked(boolean isFavorite) {
-        viewModel.setFavorite(isFavorite);
     }
 
     @Override

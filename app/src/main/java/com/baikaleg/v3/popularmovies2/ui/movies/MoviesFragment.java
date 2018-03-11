@@ -120,7 +120,7 @@ public class MoviesFragment extends DaggerFragment {
         int imageHeight = (getResources().getDisplayMetrics().heightPixels - actionBarHeight) / rows;
         int imageWidth = getResources().getDisplayMetrics().widthPixels / columns;
 
-        MoviesViewAdapter adapter = new MoviesViewAdapter((MoviesActivity) getActivity());
+        MoviesViewAdapter adapter = new MoviesViewAdapter((MoviesActivity) getActivity(),getActivity());
         adapter.setViewSize(imageWidth, imageHeight);
         adapter.refreshAdapter(moviesViewModel.items);
         return adapter;

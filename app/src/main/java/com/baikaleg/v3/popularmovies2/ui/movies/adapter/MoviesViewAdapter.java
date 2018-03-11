@@ -1,5 +1,6 @@
 package com.baikaleg.v3.popularmovies2.ui.movies.adapter;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,12 +21,13 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewHolder> {
     private final List<Movie> movies = new ArrayList<>();
     @Nullable
     private MovieItemNavigator itemNavigator;
-
+    private final Context context;
     private int viewHeight;
     private int viewWidth;
 
-    public MoviesViewAdapter(@Nullable MovieItemNavigator itemNavigator) {
+    public MoviesViewAdapter(@Nullable MovieItemNavigator itemNavigator, Context context) {
         this.itemNavigator = itemNavigator;
+        this.context = context;
     }
 
     @Override
@@ -40,7 +42,7 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewHolder> {
     @Override
     public void onBindViewHolder(MoviesViewHolder holder, int position) {
         Movie movie = movies.get(position);
-        final MovieItemViewModel viewModel = new MovieItemViewModel(null,viewHeight,viewWidth);
+        final MovieItemViewModel viewModel = new MovieItemViewModel(null, context, viewHeight, viewWidth);
         viewModel.setNavigator(itemNavigator);
         viewModel.setMovie(movie);
         holder.binding.setViewmodel(viewModel);

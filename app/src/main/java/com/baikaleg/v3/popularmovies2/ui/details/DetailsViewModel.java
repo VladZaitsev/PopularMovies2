@@ -1,5 +1,6 @@
 package com.baikaleg.v3.popularmovies2.ui.details;
 
+import android.content.Context;
 import android.databinding.Bindable;
 
 import com.baikaleg.v3.popularmovies2.MovieViewModel;
@@ -12,20 +13,13 @@ public class DetailsViewModel extends MovieViewModel {
 
     private int height, width;
 
-    @Nullable
-    private DetailsNavigator navigator;
-
     @Inject
-    public DetailsViewModel(Repository repository) {
-        super(repository);
+    public DetailsViewModel(Repository repository, Context context) {
+        super(repository, context);
     }
 
-    public void setNavigator(DetailsNavigator navigator) {
-        this.navigator = navigator;
-    }
-
-    void onDestroy() {
-        navigator = null;
+    public void favoriteClicked() {
+        setFavorite(!getFavorite());
     }
 
     @Bindable

@@ -1,0 +1,27 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="reviewmodel"
+            type="com.baikaleg.v3.popularmovies2.ui.details.adapter.ReviewItemViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/pager_review_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/pager_review_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@{reviewmodel.content}" />
+
+        <TextView
+            android:id="@+id/pager_review_author"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@{reviewmodel.author}" />
+    </RelativeLayout>
+</layout>

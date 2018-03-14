@@ -5,7 +5,7 @@ import android.databinding.BaseObservable;
 import com.baikaleg.v3.popularmovies2.dagger.scopes.ActivityScoped;
 import com.baikaleg.v3.popularmovies2.dagger.scopes.FragmentScoped;
 import com.baikaleg.v3.popularmovies2.ui.details.DetailsActivity;
-import com.baikaleg.v3.popularmovies2.ui.details.DetailsActivityFragment;
+import com.baikaleg.v3.popularmovies2.ui.details.DetailsFragment;
 import com.baikaleg.v3.popularmovies2.ui.details.DetailsViewModel;
 
 import dagger.Binds;
@@ -24,7 +24,7 @@ public interface DetailsModule {
 
     @FragmentScoped
     @ContributesAndroidInjector
-    DetailsActivityFragment moviesDetailsFragment();
+    DetailsFragment moviesDetailsFragment();
 
     @ActivityScoped
     @Binds

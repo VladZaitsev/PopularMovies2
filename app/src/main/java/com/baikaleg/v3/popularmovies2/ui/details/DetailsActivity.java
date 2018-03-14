@@ -20,7 +20,7 @@ public class DetailsActivity extends DaggerAppCompatActivity  {
     DetailsViewModel viewModel;
 
     @Inject
-    DetailsActivityFragment fragment;
+    DetailsFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +35,8 @@ public class DetailsActivity extends DaggerAppCompatActivity  {
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
-        DetailsActivityFragment detailsFragment =
-                (DetailsActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        DetailsFragment detailsFragment =
+                (DetailsFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         if (detailsFragment == null) {
             detailsFragment = fragment;
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

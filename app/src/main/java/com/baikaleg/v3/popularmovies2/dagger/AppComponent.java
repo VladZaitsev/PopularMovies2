@@ -3,7 +3,7 @@ package com.baikaleg.v3.popularmovies2.dagger;
 import android.app.Application;
 
 import com.baikaleg.v3.popularmovies2.data.Repository;
-import com.baikaleg.v3.popularmovies2.network.MovieApi;
+import com.baikaleg.v3.popularmovies2.data.network.MovieApi;
 
 import javax.inject.Singleton;
 

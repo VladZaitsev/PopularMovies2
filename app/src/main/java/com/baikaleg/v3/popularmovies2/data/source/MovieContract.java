@@ -28,5 +28,11 @@ public class MovieContract {
         public static final String TITLE = "title";
 
         public static final String POSTER_PATH = "posterPath";
+
+        public static final String RELEASE_DATE = "releaseDate";
+
+        public static final String OVERVIEW = "overview";
+
+        public static final String RATING = "rating";
     }
 }

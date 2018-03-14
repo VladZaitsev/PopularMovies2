@@ -4,7 +4,7 @@
 
         <variable
             name="viewmodel"
-            type="com.baikaleg.v3.popularmovies2.ui.movies.MovieItemViewModel" />
+            type="com.baikaleg.v3.popularmovies2.ui.movies.adapter.MovieItemViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout

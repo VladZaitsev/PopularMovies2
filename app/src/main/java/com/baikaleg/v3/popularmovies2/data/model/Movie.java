@@ -6,30 +6,25 @@ import com.google.gson.annotations.SerializedName;
 public class Movie {
     @SerializedName("id")
     @Expose
-    private final int id;
+    private  int id;
     @SerializedName("title")
     @Expose
-    private final String title;
+    private  String title;
     @SerializedName("poster_path")
     @Expose
-    private final String posterPath;
+    private  String posterPath;
     @SerializedName("overview")
     @Expose
-    private String overview;
+    private  String overview;
     @SerializedName("release_date")
     @Expose
-    private String releaseDate;
+    private  String releaseDate;
     @SerializedName("vote_average")
     @Expose
-    private double voteAverage;
+    private  double voteAverage;
 
     private boolean isFavorite;
 
-    public Movie(int id, String title, String posterPath) {
-        this.id = id;
-        this.title = title;
-        this.posterPath = posterPath;
-    }
 
     public int getId() {
         return id;
@@ -57,6 +52,30 @@ public class Movie {
 
     public boolean isFavorite() {
         return isFavorite;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public void setVoteAverage(double voteAverage) {
+        this.voteAverage = voteAverage;
     }
 
     public void setFavorite(boolean favorite) {

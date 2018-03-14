@@ -10,13 +10,14 @@ import android.view.ViewGroup;
 import com.baikaleg.v3.popularmovies2.R;
 import com.baikaleg.v3.popularmovies2.dagger.scopes.ActivityScoped;
 import com.baikaleg.v3.popularmovies2.databinding.FragmentDetailsBinding;
+import com.baikaleg.v3.popularmovies2.ui.details.adapter.ReviewPagerAdapter;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
 @ActivityScoped
-public class DetailsActivityFragment extends DaggerFragment {
+public class DetailsFragment extends DaggerFragment {
 
     @Inject
     int movieId;
@@ -25,13 +26,19 @@ public class DetailsActivityFragment extends DaggerFragment {
     DetailsViewModel viewModel;
 
     @Inject
-    public DetailsActivityFragment() {
+    public DetailsFragment() {
     }
 
     @Override
     public void onResume() {
         super.onResume();
         viewModel.start(movieId);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        viewModel.onDestroyed();
     }
 
     @Override
@@ -42,6 +49,11 @@ public class DetailsActivityFragment extends DaggerFragment {
         FragmentDetailsBinding binding = FragmentDetailsBinding.inflate(inflater, container, false);
         binding.setViewmodel(viewModel);
         binding.setView(this);
+
+        ReviewPagerAdapter adapter = new ReviewPagerAdapter();
+        binding.detailsPagerReviews.setAdapter(adapter);
+        binding.detailsPagerReviews.setCurrentItem(0);
+//        binding.detailsPagerReviews.getLayoutParams().height = 300;
 
         return binding.getRoot();
     }

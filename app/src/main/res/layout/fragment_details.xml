@@ -7,7 +7,7 @@
 
         <variable
             name="view"
-            type="com.baikaleg.v3.popularmovies2.ui.details.DetailsActivityFragment" />
+            type="com.baikaleg.v3.popularmovies2.ui.details.DetailsFragment" />
 
         <variable
             name="viewmodel"
@@ -113,9 +113,33 @@
                 app:layout_constraintTop_toBottomOf="@+id/details_data_layout" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/details_pager_header_tv"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="@dimen/details_general_margin"
+                android:layout_marginStart="@dimen/details_general_margin"
+                android:layout_marginTop="@dimen/details_general_margin"
+                app:layout_constraintTop_toBottomOf="@+id/details_overview_tv"/>
+            <View
+                android:id="@+id/detail_pager_divider"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorPrimary"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="@dimen/details_general_margin"
+                android:layout_marginStart="@dimen/details_general_margin"
+                android:layout_marginTop="@dimen/details_general_margin"
                 app:layout_constraintTop_toBottomOf="@+id/details_overview_tv" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/details_pager_reviews"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:layout_constraintTop_toBottomOf="@+id/detail_pager_divider"
+                app:reviews="@{viewmodel.items}" />
         </android.support.constraint.ConstraintLayout>
 
     </ScrollView>

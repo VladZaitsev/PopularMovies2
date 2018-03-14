@@ -6,10 +6,12 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
-import com.baikaleg.v3.popularmovies2.data.model.MoviesResponse;
+import com.baikaleg.v3.popularmovies2.data.model.Review;
+import com.baikaleg.v3.popularmovies2.data.network.response.MoviesResponse;
+import com.baikaleg.v3.popularmovies2.data.network.response.ReviewsResponse;
 import com.baikaleg.v3.popularmovies2.data.source.MovieContract;
 import com.baikaleg.v3.popularmovies2.data.source.MovieContract.MovieEntry;
-import com.baikaleg.v3.popularmovies2.network.MovieApi;
+import com.baikaleg.v3.popularmovies2.data.network.MovieApi;
 import com.baikaleg.v3.popularmovies2.ui.movies.MoviesFilterType;
 
 import java.util.ArrayList;
@@ -49,6 +51,14 @@ public class Repository implements MovieDataSource {
     }
 
     @Override
+    public Observable<List<Review>> getReviews(int id) {
+        return movieApi.createService()
+                .getMovieReviews(id)
+                .map(ReviewsResponse::getReviews)
+                .toObservable();
+    }
+
+    @Override
     public Observable<Movie> getMovie(int id) {
         return movieApi.createService().getMovie(id).map(movie -> {
             String selection = MovieEntry.ID + " = ? ";
@@ -63,14 +73,14 @@ public class Repository implements MovieDataSource {
     }
 
     @Override
-    public void markMovieAsFavorite(int id, String title, String posterPath, boolean favorite) {
+    public void markMovieAsFavorite(Movie movie, boolean favorite) {
         Uri uri = MovieContract.MovieEntry.CONTENT_URI;
         if (favorite) {
-            Movie movie = new Movie(id, title, posterPath);
+            movie.setFavorite(true);
             context.getContentResolver().insert(uri, getContentValues(movie));
         } else {
             String selection = MovieEntry.ID + " = ? ";
-            String[] selectionArgs = new String[]{Integer.toString(id)};
+            String[] selectionArgs = new String[]{Integer.toString(movie.getId())};
             context.getContentResolver().delete(uri, selection, selectionArgs);
         }
     }
@@ -84,11 +94,20 @@ public class Repository implements MovieDataSource {
                 int id = cursor.getInt(cursor.getColumnIndex(MovieEntry.ID));
                 String title = cursor.getString(cursor.getColumnIndex(MovieEntry.TITLE));
                 String posterPath = cursor.getString(cursor.getColumnIndex(MovieEntry.POSTER_PATH));
+                String overview = cursor.getString(cursor.getColumnIndex(MovieEntry.OVERVIEW));
+                Double rating = cursor.getDouble(cursor.getColumnIndex(MovieEntry.RATING));
+                String release_date = cursor.getString(cursor.getColumnIndex(MovieEntry.RELEASE_DATE));
 
-                Movie movie = new Movie(id, title, posterPath);
+                Movie movie = new Movie();
+                movie.setId(id);
+                movie.setTitle(title);
+                movie.setPosterPath(posterPath);
+                movie.setOverview(overview);
+                movie.setReleaseDate(release_date);
+                movie.setVoteAverage(rating);
                 movie.setFavorite(true);
-                movies.add(movie);
 
+                movies.add(movie);
                 cursor.moveToNext();
             }
             return movies;
@@ -110,6 +129,9 @@ public class Repository implements MovieDataSource {
         values.put(MovieEntry.ID, movie.getId());
         values.put(MovieEntry.TITLE, movie.getTitle());
         values.put(MovieEntry.POSTER_PATH, movie.getPosterPath());
+        values.put(MovieEntry.OVERVIEW,movie.getOverview());
+        values.put(MovieEntry.RATING,movie.getVoteAverage());
+        values.put(MovieEntry.RELEASE_DATE,movie.getReleaseDate());
         return values;
     }
 

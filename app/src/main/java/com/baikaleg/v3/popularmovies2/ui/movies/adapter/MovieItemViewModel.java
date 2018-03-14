@@ -4,6 +4,7 @@ import android.databinding.Bindable;
 import android.support.annotation.Nullable;
 
 import com.baikaleg.v3.popularmovies2.MovieViewModel;
+import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.ui.movies.MovieItemNavigator;
 
 import java.lang.ref.WeakReference;
@@ -25,12 +26,12 @@ public class MovieItemViewModel extends MovieViewModel {
     }
 
     public void movieClicked() {
-        int movieId = getMovieId();
-        if (movieId == 0) {
+        Movie movie = movieObservable.get();
+        if (movie == null) {
             return;
         }
         if (navigator != null && navigator.get() != null) {
-            navigator.get().openMovieDetails(movieId);
+            navigator.get().openMovieDetails(movie.getId(), movie.getTitle());
         }
     }
 

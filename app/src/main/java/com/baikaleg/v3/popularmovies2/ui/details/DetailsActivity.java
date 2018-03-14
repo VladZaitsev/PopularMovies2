@@ -12,9 +12,14 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 
-public class DetailsActivity extends DaggerAppCompatActivity  {
+public class DetailsActivity extends DaggerAppCompatActivity {
 
     public static final String EXTRA_MOVIE_ID = "MOVIE_ID";
+
+    public static final String EXTRA_MOVIE_TITLE = "MOVIE_TITLE";
+
+    @Inject
+    String title;
 
     @Inject
     DetailsViewModel viewModel;
@@ -44,6 +49,7 @@ public class DetailsActivity extends DaggerAppCompatActivity  {
             transaction.commit();
         }
 
+        getSupportActionBar().setTitle(title);
     }
 
     @Override

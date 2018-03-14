@@ -2,7 +2,11 @@ package com.baikaleg.v3.popularmovies2.ui.details;
 
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
+import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.databinding.ObservableList;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.baikaleg.v3.popularmovies2.BR;
@@ -10,6 +14,7 @@ import com.baikaleg.v3.popularmovies2.MovieViewModel;
 import com.baikaleg.v3.popularmovies2.data.Repository;
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.data.model.Review;
+import com.baikaleg.v3.popularmovies2.ui.details.adapter.ReviewItemNavigator;
 
 import javax.inject.Inject;
 
@@ -18,9 +23,15 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DetailsViewModel extends MovieViewModel {
 
+    private ReviewItemNavigator navigator;
+
     public final ObservableList<Review> items = new ObservableArrayList<>();
 
-    private int height, width;
+    public final ObservableBoolean pagerExpanded = new ObservableBoolean(false);
+
+    public final ObservableField<Integer> currentPagerPage = new ObservableField<>();
+
+    private int imageHeight, imageWidth, mainViewHeight;
 
     private Repository repository;
 
@@ -48,14 +59,29 @@ public class DetailsViewModel extends MovieViewModel {
                 .subscribe(reviews -> {
                             items.clear();
                             items.addAll(reviews);
+                            if (reviews.size() == 0) {
+                                currentPagerPage.set(0);
+                            } else {
+                                currentPagerPage.set(1);
+                            }
                             notifyChange();
                         },
                         throwable -> Log.i("eee", throwable.getMessage()));
 
     }
 
-    public void favoriteClicked() {
+    public void favoriteBtnClicked() {
         setFavorite(!getFavorite());
+    }
+
+    public void expandBtnClicked() {
+        boolean temp = !pagerExpanded.get();
+        pagerExpanded.set(temp);
+        navigator.onExpandReviewPager(!temp);
+    }
+
+    public void setNavigator(@NonNull ReviewItemNavigator navigator) {
+        this.navigator = navigator;
     }
 
     @Bindable
@@ -73,26 +99,34 @@ public class DetailsViewModel extends MovieViewModel {
     }
 
     @Bindable
-    public int getHeight() {
-        return height;
+    public int getImageHeight() {
+        return imageHeight;
+    }
+
+    void setImageHeight(int imageHeight) {
+        this.imageHeight = imageHeight;
     }
 
     @Bindable
-    public int getWidth() {
-        return width;
+    public float getMainViewHeight() {
+        return mainViewHeight;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-
+    void setMainViewHeight(int mainViewHeight) {
+        this.mainViewHeight = mainViewHeight;
     }
 
     @Bindable
-    public boolean isEmpty() {
-        return items.isEmpty();
+    public int getImageWidth() {
+        return imageWidth;
+    }
+
+    void setImageWidth(int imageWidth) {
+        this.imageWidth = imageWidth;
+
+    }
+
+    void setCurrentPagerPage(int page) {
+        currentPagerPage.set(page);
     }
 }

@@ -1,4 +1,5 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -7,21 +8,35 @@
             type="com.baikaleg.v3.popularmovies2.ui.details.adapter.ReviewItemViewModel" />
     </data>
 
-    <RelativeLayout
-        android:id="@+id/pager_review_container"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:id="@+id/pager_review_content"
+        <RelativeLayout
+            android:id="@+id/pager_review_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@{reviewmodel.content}" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/pager_review_author"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@{reviewmodel.author}" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/pager_review_author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="@{reviewmodel.author}"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+            <TextView
+                android:id="@+id/pager_review_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pager_review_author"
+                android:text="@{reviewmodel.content}"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+
+
+        </RelativeLayout>
+    </ScrollView>
+
 </layout>

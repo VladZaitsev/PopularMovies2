@@ -5,5 +5,5 @@ package com.baikaleg.v3.popularmovies2.ui.movies;
  */
 public interface MovieItemNavigator {
 
-    void openMovieDetails(int id);
+    void openMovieDetails(int id, String title);
 }

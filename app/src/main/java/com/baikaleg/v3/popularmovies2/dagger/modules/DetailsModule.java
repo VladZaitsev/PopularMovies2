@@ -18,8 +18,14 @@ public interface DetailsModule {
 
     @Provides
     @ActivityScoped
-    static int provideMovie(DetailsActivity activity) {
+    static int provideMovieId(DetailsActivity activity) {
         return activity.getIntent().getIntExtra(DetailsActivity.EXTRA_MOVIE_ID, 0);
+    }
+
+    @Provides
+    @ActivityScoped
+    static String provideMovieTitle(DetailsActivity activity) {
+        return activity.getIntent().getStringExtra(DetailsActivity.EXTRA_MOVIE_TITLE);
     }
 
     @FragmentScoped

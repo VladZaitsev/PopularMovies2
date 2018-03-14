@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.baikaleg.v3.popularmovies.ui.details.DetailsFragment"
+    tools:showIn="@layout/activity_details">
 
     <data>
 
@@ -14,92 +18,99 @@
             type="com.baikaleg.v3.popularmovies2.ui.details.DetailsViewModel" />
     </data>
 
-    <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <com.baikaleg.v3.popularmovies2.ui.details.ReviewScrollView
+        android:id="@+id/details_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.baikaleg.v3.popularmovies.ui.details.DetailsFragment"
-        tools:showIn="@layout/activity_details">
-
+        android:fillViewport="true"
+        android:paddingBottom="@dimen/details_top_margin">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:id="@+id/details_title_layout"
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/details_main_img"
+                height="@{viewmodel.imageHeight}"
+                image="@{viewmodel.url}"
+                width="@{viewmodel.imageWidth}"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="@dimen/details_general_margin"
+                android:layout_marginStart="@dimen/details_general_margin"
+                android:layout_marginTop="@dimen/details_top_margin"
+                android:contentDescription="@string/cd_poster_of_movie"
+                android:visibility="@{viewmodel.pagerExpanded? View.GONE: View.VISIBLE}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/details_title_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="@dimen/details_general_margin"
-                    android:text="@{viewmodel.title}"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
-                    android:textColor="@android:color/white" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/details_data_layout"
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/details_favorite_circle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/details_title_layout">
+                android:contentDescription="@string/cd_favorite"
+                android:visibility="@{viewmodel.pagerExpanded? View.GONE: View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="@+id/details_main_img"
+                app:layout_constraintEnd_toEndOf="@+id/details_main_img"
+                app:srcCompat="@drawable/ic_circle" />
 
-                <ImageView
-                    android:id="@+id/details_img"
-                    height="@{viewmodel.height}"
-                    image="@{viewmodel.url}"
-                    width="@{viewmodel.width}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginLeft="@dimen/details_general_margin"
-                    android:layout_marginStart="@dimen/details_general_margin"
-                    android:layout_marginTop="@dimen/details_general_margin"
-                    android:contentDescription="@string/cd_poster_of_movie" />
+            <ImageView
+                android:id="@+id/details_favorite_ib"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/cd_favorite"
+                android:onClick="@{()->viewmodel.favoriteBtnClicked()}"
+                android:src="@{viewmodel.favorite ? @drawable/ic_favorite : @drawable/ic_unfavorite}"
+                android:visibility="@{viewmodel.pagerExpanded? View.GONE: View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="@+id/details_favorite_circle"
+                app:layout_constraintEnd_toEndOf="@+id/details_favorite_circle"
+                app:layout_constraintStart_toStartOf="@+id/details_favorite_circle"
+                app:layout_constraintTop_toTopOf="@+id/details_favorite_circle" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/details_general_margin"
-                    android:layout_marginStart="@dimen/details_general_margin"
-                    android:layout_toEndOf="@id/details_img"
-                    android:layout_toRightOf="@+id/details_img"
-                    android:orientation="vertical">
+            <TextView
+                android:id="@+id/details_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/details_general_margin"
+                android:layout_marginStart="@dimen/details_general_margin"
+                android:layout_marginTop="@dimen/details_top_margin"
+                android:text="@{viewmodel.date}"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textStyle="bold"
+                android:visibility="@{viewmodel.pagerExpanded? View.GONE: View.VISIBLE}"
+                app:layout_constraintStart_toEndOf="@+id/details_main_img"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/details_date_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/details_general_margin"
-                        android:text="@{viewmodel.date}"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                        android:textStyle="bold" />
+            <TextView
+                android:id="@+id/details_rating_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/details_general_margin"
+                android:layout_marginStart="@dimen/details_general_margin"
+                android:layout_marginTop="@dimen/details_top_margin"
+                android:text="@{@string/vote_average(viewmodel.voteAverage)}"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:visibility="@{viewmodel.pagerExpanded? View.GONE: View.VISIBLE}"
+                app:layout_constraintStart_toEndOf="@+id/details_main_img"
+                app:layout_constraintTop_toBottomOf="@+id/details_date_tv" />
 
-                    <TextView
-                        android:id="@+id/details_rating_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/details_top_margin"
-                        android:text="@{@string/vote_average(viewmodel.voteAverage)}"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
-
-                    <ImageView
-                        android:id="@+id/details_favorite_ib"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/cd_favorite"
-                        android:onClick="@{()->viewmodel.favoriteClicked()}"
-                        android:src="@{viewmodel.favorite ? @drawable/ic_favorite : @drawable/ic_unfavorite}" />
-                </LinearLayout>
-
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/details_overview_header_tv"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="@dimen/details_general_margin"
+                android:layout_marginStart="@dimen/details_general_margin"
+                android:layout_marginTop="@dimen/details_top_margin"
+                android:text="@string/overview"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:visibility="@{viewmodel.pagerExpanded? View.GONE: View.VISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/details_main_img" />
 
             <TextView
                 android:id="@+id/details_overview_tv"
@@ -107,42 +118,100 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/details_general_margin"
                 android:layout_marginStart="@dimen/details_general_margin"
-                android:layout_marginTop="@dimen/details_general_margin"
+                android:layout_marginTop="@dimen/details_top_margin"
                 android:text="@{viewmodel.overview}"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                app:layout_constraintTop_toBottomOf="@+id/details_data_layout" />
+                android:visibility="@{viewmodel.pagerExpanded? View.GONE: View.VISIBLE}"
+                app:layout_constraintTop_toBottomOf="@+id/details_overview_header_tv" />
 
             <TextView
                 android:id="@+id/details_pager_header_tv"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginLeft="@dimen/details_general_margin"
+                android:layout_marginEnd="@dimen/details_general_margin"
                 android:layout_marginStart="@dimen/details_general_margin"
                 android:layout_marginTop="@dimen/details_general_margin"
-                app:layout_constraintTop_toBottomOf="@+id/details_overview_tv"/>
+                android:text="@{@string/review_header(viewmodel.currentPagerPage,viewmodel.items.size())}"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                app:layout_constraintEnd_toStartOf="@+id/details_pager_container_resize_btn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/details_overview_tv" />
+
             <View
                 android:id="@+id/detail_pager_divider"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@color/colorPrimary"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginLeft="@dimen/details_general_margin"
+                android:layout_marginEnd="@dimen/details_general_margin"
                 android:layout_marginStart="@dimen/details_general_margin"
-                android:layout_marginTop="@dimen/details_general_margin"
-                app:layout_constraintTop_toBottomOf="@+id/details_overview_tv" />
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/details_pager_header_tv" />
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/details_pager_reviews"
+            <ImageView
+                android:id="@+id/details_pager_container_resize_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="@dimen/details_general_margin"
+                android:layout_marginRight="@dimen/details_general_margin"
+                android:contentDescription="@string/cd_expand"
+                android:onClick="@{()->viewmodel.expandBtnClicked()}"
+                android:src="@{viewmodel.pagerExpanded ? @drawable/ic_unfold_less: @drawable/ic_unfold_more}"
+                app:layout_constraintBottom_toBottomOf="@+id/details_pager_header_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/details_pager_header_tv" />
+
+            <RelativeLayout
+                android:id="@+id/details_pager_container"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                app:layout_constraintTop_toBottomOf="@+id/detail_pager_divider"
-                app:reviews="@{viewmodel.items}" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="@dimen/details_top_margin"
+                android:visibility="@{viewmodel.items.size()==0?View.GONE: View.VISIBLE}"
+                app:layout_constraintTop_toBottomOf="@+id/detail_pager_divider">
+
+                <ImageView
+                    android:id="@+id/details_pager_container_left_btn"
+                    android:layout_width="@dimen/details_general_margin"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/cd_to_left"
+                    android:visibility="@{viewmodel.currentPagerPage==1? View.INVISIBLE: View.VISIBLE}"
+                    app:srcCompat="@drawable/ic_more_vert" />
+
+                <ImageView
+                    android:id="@+id/details_pager_container_right_btn"
+                    android:layout_width="@dimen/details_general_margin"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/cd_to_right"
+                    android:visibility="@{viewmodel.currentPagerPage==viewmodel.items.size()? View.INVISIBLE: View.VISIBLE}"
+                    app:srcCompat="@drawable/ic_more_vert" />
+
+                <android.support.v4.view.ViewPager
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    android:id="@+id/details_pager_reviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/details_pager_container_left_btn"
+                    android:layout_toLeftOf="@+id/details_pager_container_right_btn"
+                    android:layout_toRightOf="@+id/details_pager_container_left_btn"
+                    android:layout_toStartOf="@+id/details_pager_container_right_btn"
+                    app:layout_height="@{viewmodel.pagerExpanded ? viewmodel.mainViewHeight : @dimen/details_pager_height}"
+                    app:reviews="@{viewmodel.items}" />
+            </RelativeLayout>
+
         </android.support.constraint.ConstraintLayout>
 
-    </ScrollView>
+    </com.baikaleg.v3.popularmovies2.ui.details.ReviewScrollView>
 
 </layout>
 

@@ -58,9 +58,10 @@ public class MoviesActivity extends DaggerAppCompatActivity implements MovieItem
     }
 
     @Override
-    public void openMovieDetails(int id) {
-        Intent intent=new Intent(this, DetailsActivity.class);
-        intent.putExtra(DetailsActivity.EXTRA_MOVIE_ID,id);
+    public void openMovieDetails(int id, String title) {
+        Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra(DetailsActivity.EXTRA_MOVIE_ID, id);
+        intent.putExtra(DetailsActivity.EXTRA_MOVIE_TITLE, title);
         startActivity(intent);
     }
 

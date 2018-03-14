@@ -15,6 +15,9 @@
     <!-- content descriptions-->
     <string name="cd_poster_of_movie">Movie poster</string>
     <string name="cd_favorite">Favorite</string>
+    <string name="cd_to_left">Scroll to left</string>
+    <string name="cd_to_right">Scroll to right</string>
+    <string name="cd_expand">Expanding or reducing of reviews</string>
 
     <!-- keys-->
     <string name="type_movies_key">movies_type</string>
@@ -25,5 +28,8 @@
     <string name="no_internet">No internet connection</string>
 
     <string name="vote_average">%1$s/10</string>
+    <string name="overview">Overview</string>
+
+    <string name="review_header">Reviews (%1$s/%2$s)</string>
 
 </resources>

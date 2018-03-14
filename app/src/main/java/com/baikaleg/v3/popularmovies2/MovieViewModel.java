@@ -1,7 +1,6 @@
 package com.baikaleg.v3.popularmovies2;
 
 import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
@@ -37,10 +36,6 @@ public abstract class MovieViewModel extends BaseObservable {
 
     public void setMovie(Movie movie) {
         movieObservable.set(movie);
-    }
-
-    protected int getMovieId() {
-        return movieObservable.get().getId();
     }
 
     protected OnPropertyChangedCallback callback = new OnPropertyChangedCallback() {

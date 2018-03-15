@@ -76,7 +76,7 @@ public class MoviesViewModel extends BaseObservable {
     /**
      * @param showLoadingUI Pass in true to display a loading icon in the UI
      */
-    void loadMovies(final boolean showLoadingUI) {
+    public void loadMovies(final boolean showLoadingUI) {
         isDataLoadingError.set(false);
         if (showLoadingUI) {
             dataLoading.set(true);

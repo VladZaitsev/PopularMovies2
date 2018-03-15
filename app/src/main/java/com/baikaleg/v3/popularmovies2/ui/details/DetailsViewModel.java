@@ -4,17 +4,18 @@ import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.databinding.ObservableInt;
 import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.baikaleg.v3.popularmovies2.BR;
 import com.baikaleg.v3.popularmovies2.MovieViewModel;
+import com.baikaleg.v3.popularmovies2.R;
 import com.baikaleg.v3.popularmovies2.data.Repository;
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.data.model.Review;
-import com.baikaleg.v3.popularmovies2.ui.details.adapter.ReviewItemNavigator;
+import com.baikaleg.v3.popularmovies2.data.model.Trailer;
 
 import javax.inject.Inject;
 
@@ -23,9 +24,15 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DetailsViewModel extends MovieViewModel {
 
-    private ReviewItemNavigator navigator;
+    private static final String TAG = DetailsViewModel.class.getSimpleName();
 
-    public final ObservableList<Review> items = new ObservableArrayList<>();
+    private DetailModelNavigator navigator;
+
+    public final ObservableInt trailerLayout = new ObservableInt(R.layout.item_trailer);
+
+    public final ObservableList<Review> reviewsList = new ObservableArrayList<>();
+
+    public final ObservableList<Trailer> trailersList = new ObservableArrayList<>();
 
     public final ObservableBoolean pagerExpanded = new ObservableBoolean(false);
 
@@ -57,17 +64,29 @@ public class DetailsViewModel extends MovieViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(reviews -> {
-                            items.clear();
-                            items.addAll(reviews);
-                            if (reviews.size() == 0) {
-                                currentPagerPage.set(0);
-                            } else {
-                                currentPagerPage.set(1);
-                            }
-                            notifyChange();
-                        },
-                        throwable -> Log.i("eee", throwable.getMessage()));
+                    reviewsList.clear();
+                    reviewsList.addAll(reviews);
+                    if (reviews.size() == 0) {
+                        currentPagerPage.set(0);
+                    } else {
+                        currentPagerPage.set(1);
+                    }
+                    notifyChange();
+                }, throwable -> Log.i(TAG, throwable.getMessage()));
 
+        repository.getTrailers(movieId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(trailers -> {
+                    trailersList.clear();
+                    for (int i = 0; i < trailers.size(); i++) {
+                        Trailer trailer = trailers.get(i);
+                        int count = i + 1;
+                        trailer.setOrdinalName("Trailer #" + count);
+                        trailersList.add(trailer);
+                    }
+                    notifyChange();
+                }, throwable -> Log.i(TAG, throwable.getMessage()));
     }
 
     public void favoriteBtnClicked() {
@@ -80,7 +99,7 @@ public class DetailsViewModel extends MovieViewModel {
         navigator.onExpandReviewPager(!temp);
     }
 
-    public void setNavigator(@NonNull ReviewItemNavigator navigator) {
+    void setNavigator(@NonNull DetailModelNavigator navigator) {
         this.navigator = navigator;
     }
 

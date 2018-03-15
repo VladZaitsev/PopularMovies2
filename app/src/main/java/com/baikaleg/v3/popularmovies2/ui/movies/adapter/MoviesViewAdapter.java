@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.baikaleg.v3.popularmovies2.R;
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
-import com.baikaleg.v3.popularmovies2.databinding.ItemMoviesRvBinding;
+import com.baikaleg.v3.popularmovies2.databinding.ItemMoviesBinding;
 import com.baikaleg.v3.popularmovies2.ui.movies.MovieItemNavigator;
 
 import java.util.ArrayList;
@@ -29,8 +29,8 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewHolder> {
     @Override
     public MoviesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ItemMoviesRvBinding binding = DataBindingUtil.inflate(inflater,
-                R.layout.item_movies_rv, parent, false);
+        ItemMoviesBinding binding = DataBindingUtil.inflate(inflater,
+                R.layout.item_movies, parent, false);
         binding.getRoot().setLayoutParams(new ViewGroup.LayoutParams(viewWidth, viewHeight));
         return new MoviesViewHolder(binding.getRoot());
     }

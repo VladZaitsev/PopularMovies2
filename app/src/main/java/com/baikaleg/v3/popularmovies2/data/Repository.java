@@ -7,8 +7,10 @@ import android.net.Uri;
 
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.data.model.Review;
+import com.baikaleg.v3.popularmovies2.data.model.Trailer;
 import com.baikaleg.v3.popularmovies2.data.network.response.MoviesResponse;
 import com.baikaleg.v3.popularmovies2.data.network.response.ReviewsResponse;
+import com.baikaleg.v3.popularmovies2.data.network.response.TrailersResponse;
 import com.baikaleg.v3.popularmovies2.data.source.MovieContract;
 import com.baikaleg.v3.popularmovies2.data.source.MovieContract.MovieEntry;
 import com.baikaleg.v3.popularmovies2.data.network.MovieApi;
@@ -23,6 +25,8 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 
 public class Repository implements MovieDataSource {
+    private static final String VIDEO_TYPE = "Trailer";
+
     private Context context;
     private MovieApi movieApi;
 
@@ -57,6 +61,20 @@ public class Repository implements MovieDataSource {
                 .map(ReviewsResponse::getReviews)
                 .toObservable();
     }
+
+    @Override
+    public Observable<List<Trailer>> getTrailers(int id) {
+        return movieApi.createService()
+                .getTrailers(id)
+                .map(TrailersResponse::getTrailers)
+                .flatMap(trailers ->
+                        Observable.fromIterable(trailers)
+                                .filter(trailer -> trailer.getType().equals(VIDEO_TYPE)))
+                .take(3)
+                .toList()
+                .toObservable();
+    }
+
 
     @Override
     public Observable<Movie> getMovie(int id) {
@@ -129,9 +147,9 @@ public class Repository implements MovieDataSource {
         values.put(MovieEntry.ID, movie.getId());
         values.put(MovieEntry.TITLE, movie.getTitle());
         values.put(MovieEntry.POSTER_PATH, movie.getPosterPath());
-        values.put(MovieEntry.OVERVIEW,movie.getOverview());
-        values.put(MovieEntry.RATING,movie.getVoteAverage());
-        values.put(MovieEntry.RELEASE_DATE,movie.getReleaseDate());
+        values.put(MovieEntry.OVERVIEW, movie.getOverview());
+        values.put(MovieEntry.RATING, movie.getVoteAverage());
+        values.put(MovieEntry.RELEASE_DATE, movie.getReleaseDate());
         return values;
     }
 

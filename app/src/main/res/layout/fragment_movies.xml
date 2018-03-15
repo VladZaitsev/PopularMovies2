@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="@{viewmodel.isDataLoadingError? View.GONE: View.VISIBLE }"
-                app:items="@{viewmodel.items}" />
+                app:movies="@{viewmodel.items}" />
 
             <TextView
                 android:id="@+id/noMoviesError"

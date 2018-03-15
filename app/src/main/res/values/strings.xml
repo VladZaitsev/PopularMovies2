@@ -5,6 +5,7 @@
     <!-- urls-->
     <string name="base_url" translatable="false">https://api.themoviedb.org/3/movie/</string>
     <string name="image_base_url" translatable="false">https://image.tmdb.org/t/p/w185</string>
+    <string name="youtube_base_url" translatable="false">"http://www.youtube.com/watch?v="</string>
 
     <!-- screen titles-->
     <string name="popular">Popular Movies</string>
@@ -26,6 +27,7 @@
     <!-- messages-->
     <string name="no_movies">No movies</string>
     <string name="no_internet">No internet connection</string>
+    <string name="no_source">Unknown source</string>
 
     <string name="vote_average">%1$s/10</string>
     <string name="overview">Overview</string>

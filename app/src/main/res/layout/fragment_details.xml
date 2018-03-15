@@ -31,9 +31,6 @@
 
             <ImageView
                 android:id="@+id/details_main_img"
-                height="@{viewmodel.imageHeight}"
-                image="@{viewmodel.url}"
-                width="@{viewmodel.imageWidth}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -43,8 +40,28 @@
                 android:layout_marginTop="@dimen/details_top_margin"
                 android:contentDescription="@string/cd_poster_of_movie"
                 android:visibility="@{viewmodel.pagerExpanded? View.GONE: View.VISIBLE}"
+                app:image="@{viewmodel.url}"
+                app:image_height="@{viewmodel.imageHeight}"
+                app:image_width="@{viewmodel.imageWidth}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/details_trailers_container"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/details_general_margin"
+                android:layout_marginLeft="@dimen/details_general_margin"
+                android:layout_marginRight="@dimen/details_general_margin"
+                android:layout_marginStart="@dimen/details_general_margin"
+                android:layout_marginTop="@dimen/details_top_margin"
+                android:orientation="vertical"
+                app:layout="@{viewmodel.trailerLayout}"
+                app:layout_constraintBottom_toBottomOf="@+id/details_main_img"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/details_main_img"
+                app:layout_constraintTop_toBottomOf="@+id/details_rating_tv"
+                app:trailers="@{viewmodel.trailersList}" />
 
             <ImageView
                 android:id="@+id/details_favorite_circle"
@@ -133,7 +150,7 @@
                 android:layout_marginEnd="@dimen/details_general_margin"
                 android:layout_marginStart="@dimen/details_general_margin"
                 android:layout_marginTop="@dimen/details_general_margin"
-                android:text="@{@string/review_header(viewmodel.currentPagerPage,viewmodel.items.size())}"
+                android:text="@{@string/review_header(viewmodel.currentPagerPage,viewmodel.reviewsList.size())}"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 app:layout_constraintEnd_toStartOf="@+id/details_pager_container_resize_btn"
                 app:layout_constraintStart_toStartOf="parent"
@@ -160,6 +177,7 @@
                 android:contentDescription="@string/cd_expand"
                 android:onClick="@{()->viewmodel.expandBtnClicked()}"
                 android:src="@{viewmodel.pagerExpanded ? @drawable/ic_unfold_less: @drawable/ic_unfold_more}"
+                android:visibility="@{viewmodel.reviewsList.size()==0?View.GONE: View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/details_pager_header_tv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/details_pager_header_tv" />
@@ -171,7 +189,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_marginBottom="@dimen/details_top_margin"
-                android:visibility="@{viewmodel.items.size()==0?View.GONE: View.VISIBLE}"
+                android:visibility="@{viewmodel.reviewsList.size()==0?View.GONE: View.VISIBLE}"
                 app:layout_constraintTop_toBottomOf="@+id/detail_pager_divider">
 
                 <ImageView
@@ -193,11 +211,10 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/cd_to_right"
-                    android:visibility="@{viewmodel.currentPagerPage==viewmodel.items.size()? View.INVISIBLE: View.VISIBLE}"
+                    android:visibility="@{viewmodel.currentPagerPage==viewmodel.reviewsList.size()? View.INVISIBLE: View.VISIBLE}"
                     app:srcCompat="@drawable/ic_more_vert" />
 
                 <android.support.v4.view.ViewPager
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     android:id="@+id/details_pager_reviews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -205,8 +222,9 @@
                     android:layout_toLeftOf="@+id/details_pager_container_right_btn"
                     android:layout_toRightOf="@+id/details_pager_container_left_btn"
                     android:layout_toStartOf="@+id/details_pager_container_right_btn"
-                    app:layout_height="@{viewmodel.pagerExpanded ? viewmodel.mainViewHeight : @dimen/details_pager_height}"
-                    app:reviews="@{viewmodel.items}" />
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    app:pager_height="@{viewmodel.pagerExpanded ? viewmodel.mainViewHeight : @dimen/details_pager_height}"
+                    app:reviews="@{viewmodel.reviewsList}" />
             </RelativeLayout>
 
         </android.support.constraint.ConstraintLayout>

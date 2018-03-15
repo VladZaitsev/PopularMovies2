@@ -4,11 +4,11 @@ import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.baikaleg.v3.popularmovies2.databinding.ItemMoviesRvBinding;
+import com.baikaleg.v3.popularmovies2.databinding.ItemMoviesBinding;
 
 class MoviesViewHolder extends RecyclerView.ViewHolder {
 
-    final ItemMoviesRvBinding binding;
+    final ItemMoviesBinding binding;
 
     MoviesViewHolder(View itemView) {
         super(itemView);

@@ -7,11 +7,11 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import com.baikaleg.v3.popularmovies2.R;
 import com.baikaleg.v3.popularmovies2.dagger.scopes.ActivityScoped;
 import com.baikaleg.v3.popularmovies2.databinding.FragmentDetailsBinding;
-import com.baikaleg.v3.popularmovies2.ui.details.adapter.ReviewItemNavigator;
 import com.baikaleg.v3.popularmovies2.ui.details.adapter.ReviewPagerAdapter;
 
 import javax.inject.Inject;
@@ -52,7 +52,11 @@ public class DetailsFragment extends DaggerFragment {
         binding = FragmentDetailsBinding.inflate(inflater, container, false);
         binding.setViewmodel(viewModel);
         binding.setView(this);
-        viewModel.setNavigator(expanded -> binding.detailsScrollView.setScrollingEnabled(expanded));
+        viewModel.setNavigator(expanded -> {
+            binding.detailsScrollView.fullScroll(ScrollView.FOCUS_UP);
+            binding.detailsScrollView.pageScroll(ScrollView.FOCUS_UP);
+            binding.detailsScrollView.setScrollingEnabled(expanded);
+        });
 
         ReviewPagerAdapter adapter = new ReviewPagerAdapter();
         binding.detailsPagerReviews.setAdapter(adapter);

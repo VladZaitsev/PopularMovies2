@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.baikaleg.v3.popularmovies2.R;
 import com.baikaleg.v3.popularmovies2.data.model.Review;
-import com.baikaleg.v3.popularmovies2.databinding.ItemReviewsPvBinding;
+import com.baikaleg.v3.popularmovies2.databinding.ItemReviewsBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +22,8 @@ public class ReviewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         LayoutInflater inflater = LayoutInflater.from(container.getContext());
-        ItemReviewsPvBinding binding = DataBindingUtil.inflate(inflater,
-                R.layout.item_reviews_pv, container, false);
+        ItemReviewsBinding binding = DataBindingUtil.inflate(inflater,
+                R.layout.item_reviews, container, false);
 
         final ReviewItemViewModel viewModel = new ReviewItemViewModel();
         viewModel.setReview(reviews.get(position));

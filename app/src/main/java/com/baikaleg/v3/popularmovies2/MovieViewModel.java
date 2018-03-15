@@ -13,7 +13,7 @@ import com.baikaleg.v3.popularmovies2.data.model.Movie;
 
 public abstract class MovieViewModel extends BaseObservable {
 
-    public final ObservableBoolean dataLoading = new ObservableBoolean(false);
+    public final ObservableBoolean dataLoading = new ObservableBoolean(true);
 
     public final ObservableField<Movie> movieObservable = new ObservableField<>();
 

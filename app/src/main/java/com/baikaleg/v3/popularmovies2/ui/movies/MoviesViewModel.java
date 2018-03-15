@@ -45,7 +45,7 @@ public class MoviesViewModel extends BaseObservable {
     }
 
     void start() {
-        loadMovies(false);
+        loadMovies();
     }
 
     @Bindable
@@ -73,14 +73,9 @@ public class MoviesViewModel extends BaseObservable {
         return currentFilterType;
     }
 
-    /**
-     * @param showLoadingUI Pass in true to display a loading icon in the UI
-     */
-    public void loadMovies(final boolean showLoadingUI) {
+    public void loadMovies() {
         isDataLoadingError.set(false);
-        if (showLoadingUI) {
-            dataLoading.set(true);
-        }
+        dataLoading.set(true);
 
         Disposable disposable = repository.getMovies(currentFilterType)
                 .subscribeOn(Schedulers.io())

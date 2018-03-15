@@ -93,8 +93,8 @@ public class DetailsFragment extends DaggerFragment {
             imageHeight = mainViewHeight / 2;
             imageWidth = getResources().getDisplayMetrics().widthPixels / 2;
         } else if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            imageHeight = mainViewHeight;
-            imageWidth = imageHeight * 3 / 4;
+            imageWidth = getResources().getDisplayMetrics().widthPixels / 4;
+            imageHeight =imageWidth*4/3;
         }
         viewModel.setMainViewHeight(mainViewHeight - actionBarHeight);
         viewModel.setImageWidth(imageWidth);

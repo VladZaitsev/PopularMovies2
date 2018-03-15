@@ -65,7 +65,7 @@ public class MoviesBindingUtil {
 
     @BindingAdapter("app:onRefresh")
     public static void setSwipeRefreshLayoutOnRefreshListener(SwipeRefreshLayout view, final MoviesViewModel viewModel) {
-        view.setOnRefreshListener(() -> viewModel.loadMovies(true));
+        view.setOnRefreshListener(viewModel::loadMovies);
     }
 
 

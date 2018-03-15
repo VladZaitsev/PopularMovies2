@@ -33,5 +33,6 @@
     <string name="overview">Overview</string>
 
     <string name="review_header">Reviews (%1$s/%2$s)</string>
+    <string name="ordinalTrailerName">Trailer #</string>
 
 </resources>

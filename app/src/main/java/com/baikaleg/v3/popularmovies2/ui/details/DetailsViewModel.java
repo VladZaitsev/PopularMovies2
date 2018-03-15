@@ -1,5 +1,6 @@
 package com.baikaleg.v3.popularmovies2.ui.details;
 
+import android.content.Context;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
@@ -42,10 +43,13 @@ public class DetailsViewModel extends MovieViewModel {
 
     private Repository repository;
 
+    private Context context;
+
     @Inject
-    public DetailsViewModel(Repository repository) {
+    public DetailsViewModel(Repository repository, Context context) {
         super();
         this.repository = repository;
+        this.context = context;
     }
 
     void onDestroyed() {
@@ -57,7 +61,11 @@ public class DetailsViewModel extends MovieViewModel {
         repository.getMovie(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movieObservable::set,
+                .subscribe(movie -> {
+                            movieObservable.set(movie);
+                            dataLoading.set(false);
+                            notifyChange();
+                        },
                         throwable -> movieObservable.set(null));
 
         repository.getReviews(movieId)
@@ -82,7 +90,7 @@ public class DetailsViewModel extends MovieViewModel {
                     for (int i = 0; i < trailers.size(); i++) {
                         Trailer trailer = trailers.get(i);
                         int count = i + 1;
-                        trailer.setOrdinalName("Trailer #" + count);
+                        trailer.setOrdinalName(context.getString(R.string.ordinalTrailerName) + count);
                         trailersList.add(trailer);
                     }
                     notifyChange();
@@ -142,7 +150,6 @@ public class DetailsViewModel extends MovieViewModel {
 
     void setImageWidth(int imageWidth) {
         this.imageWidth = imageWidth;
-
     }
 
     void setCurrentPagerPage(int page) {

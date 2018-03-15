@@ -100,7 +100,7 @@ public class MoviesFragment extends DaggerFragment {
                 moviesViewModel.setFiltering(MoviesFilterType.FAVORITE_MOVIES);
                 break;
         }
-        moviesViewModel.loadMovies(true);
+        moviesViewModel.loadMovies();
         return true;
     }
 

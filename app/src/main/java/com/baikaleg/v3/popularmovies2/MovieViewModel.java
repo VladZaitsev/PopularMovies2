@@ -13,7 +13,7 @@ import com.baikaleg.v3.popularmovies2.data.model.Movie;
 
 public abstract class MovieViewModel extends BaseObservable {
 
-    public final ObservableBoolean dataLoading = new ObservableBoolean(true);
+    public final ObservableBoolean dataLoading = new ObservableBoolean(false);
 
     public final ObservableField<Movie> movieObservable = new ObservableField<>();
 
@@ -25,7 +25,7 @@ public abstract class MovieViewModel extends BaseObservable {
 
     public final ObservableField<String> url = new ObservableField<>();
 
-    public final ObservableField<Double> voteAverage = new ObservableField<>();
+    public final ObservableField<String> voteAverage = new ObservableField<>();
 
     public final ObservableField<Boolean> favorite = new ObservableField<>(false);
 
@@ -47,9 +47,12 @@ public abstract class MovieViewModel extends BaseObservable {
                 overview.set(movie.getOverview());
                 date.set(movie.getReleaseDate());
                 url.set(movie.getPosterPath());
-                voteAverage.set(movie.getVoteAverage());
-                favorite.set(movie.isFavorite());
-
+                voteAverage.set(String.valueOf(movie.getVoteAverage()));
+                if(movie.getFavorite()==1){
+                    favorite.set(true);
+                }else {
+                    favorite.set(false);
+                }
                 notifyChange();
             }
         }

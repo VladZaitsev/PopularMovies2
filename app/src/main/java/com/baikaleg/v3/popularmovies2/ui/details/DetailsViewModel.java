@@ -57,18 +57,8 @@ public class DetailsViewModel extends MovieViewModel {
         callback = null;
     }
 
-    void start(int movieId) {
-        repository.getMovie(movieId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movie -> {
-                            movieObservable.set(movie);
-                            dataLoading.set(false);
-                            notifyChange();
-                        },
-                        throwable -> movieObservable.set(null));
-
-        repository.getReviews(movieId)
+    void start() {
+        repository.getReviews(movieObservable.get().getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(reviews -> {
@@ -82,7 +72,7 @@ public class DetailsViewModel extends MovieViewModel {
                     notifyChange();
                 }, throwable -> Log.i(TAG, throwable.getMessage()));
 
-        repository.getTrailers(movieId)
+        repository.getTrailers(movieObservable.get().getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(trailers -> {

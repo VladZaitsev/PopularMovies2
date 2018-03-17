@@ -11,6 +11,7 @@ import android.widget.ScrollView;
 
 import com.baikaleg.v3.popularmovies2.R;
 import com.baikaleg.v3.popularmovies2.dagger.scopes.ActivityScoped;
+import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.databinding.FragmentDetailsBinding;
 import com.baikaleg.v3.popularmovies2.ui.details.adapter.ReviewPagerAdapter;
 
@@ -23,10 +24,10 @@ public class DetailsFragment extends DaggerFragment {
     private FragmentDetailsBinding binding;
 
     @Inject
-    int movieId;
+    DetailsViewModel viewModel;
 
     @Inject
-    DetailsViewModel viewModel;
+    Movie movie;
 
     @Inject
     public DetailsFragment() {
@@ -35,7 +36,8 @@ public class DetailsFragment extends DaggerFragment {
     @Override
     public void onResume() {
         super.onResume();
-        viewModel.start(movieId);
+        viewModel.setMovie(movie);
+        viewModel.start();
     }
 
     @Override

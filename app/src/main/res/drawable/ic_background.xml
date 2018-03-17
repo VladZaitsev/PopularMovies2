@@ -12,7 +12,7 @@
         android:height="@dimen/details_circle_favorite_size" />
 
     <gradient
-        android:endColor="@android:color/white"
-        android:startColor="@android:color/white" />
+        android:endColor="@color/circle_background"
+        android:startColor="@color/circle_background" />
 
 </shape>

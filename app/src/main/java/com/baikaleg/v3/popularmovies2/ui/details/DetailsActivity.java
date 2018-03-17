@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.baikaleg.v3.popularmovies2.R;
+import com.baikaleg.v3.popularmovies2.data.model.Movie;
 
 import javax.inject.Inject;
 
@@ -14,18 +15,21 @@ import dagger.android.support.DaggerAppCompatActivity;
 
 public class DetailsActivity extends DaggerAppCompatActivity {
 
-    public static final String EXTRA_MOVIE_ID = "MOVIE_ID";
-
-    public static final String EXTRA_MOVIE_TITLE = "MOVIE_TITLE";
+    public static final String EXTRA_MOVIE = "MOVIE";
 
     @Inject
-    String title;
+    Movie movie;
 
     @Inject
     DetailsViewModel viewModel;
 
     @Inject
     DetailsFragment fragment;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,7 @@ public class DetailsActivity extends DaggerAppCompatActivity {
             transaction.commit();
         }
 
-        getSupportActionBar().setTitle(title);
+        getSupportActionBar().setTitle(movie.getTitle());
     }
 
     @Override

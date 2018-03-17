@@ -31,7 +31,7 @@ public class MovieItemViewModel extends MovieViewModel {
             return;
         }
         if (navigator != null && navigator.get() != null) {
-            navigator.get().openMovieDetails(movie.getId(), movie.getTitle());
+            navigator.get().openMovieDetails(movie);
         }
     }
 

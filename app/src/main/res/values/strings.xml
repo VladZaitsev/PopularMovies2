@@ -19,10 +19,11 @@
     <string name="cd_to_left">Scroll to left</string>
     <string name="cd_to_right">Scroll to right</string>
     <string name="cd_expand">Expanding or reducing of reviews</string>
+    <string name="cd_rating">Rating</string>
 
     <!-- keys-->
-    <string name="type_movies_key">movies_type</string>
-    <string name="type_movie_key">movie_type</string>
+    <string name="type_movies_key" translatable="false">movies_type</string>
+    <string name="type_movie_key" translatable="false">movie_type</string>
 
     <!-- messages-->
     <string name="no_movies">No movies</string>
@@ -34,5 +35,6 @@
 
     <string name="review_header">Reviews (%1$s/%2$s)</string>
     <string name="ordinalTrailerName">Trailer #</string>
+    <string name="release_date">Release date:</string>
 
 </resources>

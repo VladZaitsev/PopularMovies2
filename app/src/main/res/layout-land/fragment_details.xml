@@ -62,14 +62,14 @@
                 app:trailers="@{viewmodel.trailersList}" />
 
             <ImageView
-                android:id="@+id/details_favorite_circle"
+                android:id="@+id/details_favorite_backgorund"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/cd_favorite"
                 android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/details_main_img"
                 app:layout_constraintEnd_toEndOf="@+id/details_main_img"
-                app:srcCompat="@drawable/ic_circle" />
+                app:srcCompat="@drawable/ic_background" />
 
             <ImageView
                 android:id="@+id/details_favorite_ib"
@@ -79,10 +79,23 @@
                 android:onClick="@{()->viewmodel.favoriteBtnClicked()}"
                 android:src="@{viewmodel.favorite ? @drawable/ic_favorite : @drawable/ic_unfavorite}"
                 android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@+id/details_favorite_circle"
-                app:layout_constraintEnd_toEndOf="@+id/details_favorite_circle"
-                app:layout_constraintStart_toStartOf="@+id/details_favorite_circle"
-                app:layout_constraintTop_toTopOf="@+id/details_favorite_circle" />
+                app:layout_constraintBottom_toBottomOf="@+id/details_favorite_backgorund"
+                app:layout_constraintEnd_toEndOf="@+id/details_favorite_backgorund"
+                app:layout_constraintStart_toStartOf="@+id/details_favorite_backgorund"
+                app:layout_constraintTop_toTopOf="@+id/details_favorite_backgorund" />
+
+            <TextView
+                android:id="@+id/details_date_header_tv"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/details_top_margin"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/details_general_margin"
+                android:layout_marginStart="@dimen/details_general_margin"
+                android:text="@string/release_date"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
+                app:layout_constraintStart_toEndOf="@+id/details_main_img"
+                app:layout_constraintTop_toTopOf="parent"  />
 
             <TextView
                 android:id="@+id/details_date_tv"
@@ -92,25 +105,37 @@
                 android:layout_marginStart="@dimen/details_general_margin"
                 android:layout_marginTop="@dimen/details_top_margin"
                 android:text="@{viewmodel.date}"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textStyle="bold"
                 android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
                 app:layout_constraintStart_toEndOf="@+id/details_main_img"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/details_date_header_tv" />
+
+            <ImageView
+                android:id="@+id/details_rating_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/details_general_margin"
+                android:layout_marginStart="@dimen/details_general_margin"
+                android:layout_marginTop="@dimen/details_top_margin"
+                android:contentDescription="@string/cd_rating"
+                android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
+                app:layout_constraintStart_toEndOf="@+id/details_main_img"
+                app:layout_constraintTop_toBottomOf="@+id/details_date_tv"
+                app:srcCompat="@drawable/ic_star" />
 
             <TextView
                 android:id="@+id/details_rating_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/details_general_margin"
-                android:layout_marginTop="@dimen/details_top_margin"
+                android:layout_marginLeft="@dimen/details_top_margin"
+                android:layout_marginStart="@dimen/details_top_margin"
                 android:text="@{@string/vote_average(viewmodel.voteAverage)}"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@+id/details_date_tv"
-                app:layout_constraintTop_toTopOf="@+id/details_date_tv"
-                app:layout_constraintEnd_toStartOf="parent"
-                android:layout_marginRight="@dimen/details_general_margin" />
+                app:layout_constraintBottom_toBottomOf="@+id/details_rating_star"
+                app:layout_constraintStart_toEndOf="@+id/details_rating_star"
+                app:layout_constraintTop_toTopOf="@+id/details_rating_star" />
 
             <ProgressBar
                 android:id="@+id/details_progress"

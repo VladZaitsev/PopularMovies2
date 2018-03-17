@@ -4,6 +4,7 @@ import android.databinding.BaseObservable;
 
 import com.baikaleg.v3.popularmovies2.dagger.scopes.ActivityScoped;
 import com.baikaleg.v3.popularmovies2.dagger.scopes.FragmentScoped;
+import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.ui.details.DetailsActivity;
 import com.baikaleg.v3.popularmovies2.ui.details.DetailsFragment;
 import com.baikaleg.v3.popularmovies2.ui.details.DetailsViewModel;
@@ -18,14 +19,8 @@ public interface DetailsModule {
 
     @Provides
     @ActivityScoped
-    static int provideMovieId(DetailsActivity activity) {
-        return activity.getIntent().getIntExtra(DetailsActivity.EXTRA_MOVIE_ID, 0);
-    }
-
-    @Provides
-    @ActivityScoped
-    static String provideMovieTitle(DetailsActivity activity) {
-        return activity.getIntent().getStringExtra(DetailsActivity.EXTRA_MOVIE_TITLE);
+    static Movie provideMovie(DetailsActivity activity) {
+        return activity.getIntent().getParcelableExtra(DetailsActivity.EXTRA_MOVIE);
     }
 
     @FragmentScoped

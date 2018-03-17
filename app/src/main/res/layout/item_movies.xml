@@ -3,6 +3,12 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="view"
+            type="com.baikaleg.v3.popularmovies2.ui.movies.adapter.MoviesViewHolder" />
+
         <variable
             name="viewmodel"
             type="com.baikaleg.v3.popularmovies2.ui.movies.adapter.MovieItemViewModel" />
@@ -10,7 +16,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:onClick="@{()->viewmodel.movieClicked()}">
 
         <ImageView
@@ -20,6 +26,52 @@
             android:contentDescription="@string/cd_poster_of_movie"
             app:image="@{viewmodel.url}"
             app:image_height="@{viewmodel.height}"
-            app:image_width="@{viewmodel.width}"/>
+            app:image_width="@{viewmodel.width}" />
+
+        <ImageView
+            android:id="@+id/movie_item_vote_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/details_top_margin"
+            android:contentDescription="@string/cd_favorite"
+            app:layout_constraintEnd_toEndOf="@+id/movie_item_img"
+            app:layout_constraintTop_toTopOf="@+id/movie_item_img"
+            app:srcCompat="@drawable/ic_background" />
+
+        <ImageView
+            android:id="@+id/movie_favorite_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/details_top_margin"
+            android:layout_marginTop="@dimen/details_top_margin"
+            android:contentDescription="@string/cd_favorite"
+            android:visibility="@{viewmodel.favorite? View.VISIBLE : View.GONE, default=gone}"
+            app:layout_constraintEnd_toEndOf="@+id/movie_item_vote_back"
+            app:layout_constraintStart_toStartOf="@+id/movie_item_vote_back"
+            app:layout_constraintTop_toBottomOf="@+id/movie_item_vote_back"
+            app:srcCompat="@drawable/ic_background" />
+
+        <TextView
+            android:id="@+id/movie_item_vote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewmodel.voteAverage}"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toBottomOf="@+id/movie_item_vote_back"
+            app:layout_constraintEnd_toEndOf="@+id/movie_item_vote_back"
+            app:layout_constraintStart_toStartOf="@+id/movie_item_vote_back"
+            app:layout_constraintTop_toTopOf="@+id/movie_item_vote_back" />
+
+        <ImageView
+            android:id="@+id/movie_item_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/cd_favorite"
+            android:src="@{viewmodel.favorite ? @drawable/ic_favorite : null}"
+            app:layout_constraintBottom_toBottomOf="@+id/movie_favorite_back"
+            app:layout_constraintEnd_toEndOf="@+id/movie_favorite_back"
+            app:layout_constraintStart_toStartOf="@+id/movie_favorite_back"
+            app:layout_constraintTop_toTopOf="@+id/movie_favorite_back" />
     </android.support.constraint.ConstraintLayout>
 </layout>

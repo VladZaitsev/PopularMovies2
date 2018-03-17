@@ -41,6 +41,7 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewHolder> {
         final MovieItemViewModel viewModel = new MovieItemViewModel(viewHeight, viewWidth);
         viewModel.setNavigator(itemNavigator);
         viewModel.setMovie(movie);
+        holder.binding.setView(holder);
         holder.binding.setViewmodel(viewModel);
     }
 

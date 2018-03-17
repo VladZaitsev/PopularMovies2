@@ -6,11 +6,11 @@ import android.view.View;
 
 import com.baikaleg.v3.popularmovies2.databinding.ItemMoviesBinding;
 
-class MoviesViewHolder extends RecyclerView.ViewHolder {
+public class MoviesViewHolder extends RecyclerView.ViewHolder {
 
-    final ItemMoviesBinding binding;
+    public final ItemMoviesBinding binding;
 
-    MoviesViewHolder(View itemView) {
+    public MoviesViewHolder(View itemView) {
         super(itemView);
         binding = DataBindingUtil.bind(itemView);
     }

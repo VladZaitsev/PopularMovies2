@@ -6,6 +6,7 @@ import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,10 +24,12 @@ import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.data.model.Review;
 import com.baikaleg.v3.popularmovies2.data.model.Trailer;
 import com.baikaleg.v3.popularmovies2.ui.details.adapter.ReviewPagerAdapter;
+import com.baikaleg.v3.popularmovies2.ui.movies.MoviesFilterType;
 import com.baikaleg.v3.popularmovies2.ui.movies.MoviesViewModel;
 import com.baikaleg.v3.popularmovies2.ui.movies.adapter.MoviesViewAdapter;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -48,10 +51,18 @@ public class MoviesBindingUtil {
         if (TextUtils.isEmpty(url)) {
             return;
         }
-        Picasso.with(imageView.getContext())
-                .load(imageView.getContext().getString(R.string.image_base_url) + url)
-                .resize(width, height)
-                .into(imageView);
+        if(url.contains(Environment.getExternalStorageDirectory().toString())){
+            Picasso.with(imageView.getContext())
+                    .load(new File(url))
+                    .resize(width, height)
+                    .into(imageView);
+        }else {
+            Picasso.with(imageView.getContext())
+                    .load(url)
+                    .resize(width, height)
+                    .into(imageView);
+        }
+
     }
 
     @SuppressWarnings("unchecked")

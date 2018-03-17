@@ -17,7 +17,7 @@ public interface MovieDataSource {
 
     Observable<List<Trailer>> getTrailers(int id);
 
-    Observable<Movie> getMovie(int id);
+  //  Observable<Movie> getMovie(int id);
 
     void markMovieAsFavorite(Movie movie, boolean favorite);
 }

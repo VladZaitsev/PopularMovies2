@@ -21,10 +21,6 @@ public class ReviewScrollView extends NestedScrollView {
         mScrollable = enabled;
     }
 
-    public boolean isScrollable() {
-        return mScrollable;
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
@@ -39,8 +35,7 @@ public class ReviewScrollView extends NestedScrollView {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         // Don't do anything with intercepted touch events if
         // we are not scrollable
-        if (!mScrollable) return false;
-        else return super.onInterceptTouchEvent(ev);
+        return mScrollable && super.onInterceptTouchEvent(ev);
     }
 
 }

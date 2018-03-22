@@ -13,6 +13,7 @@ import android.util.Log;
 import com.baikaleg.v3.popularmovies2.BR;
 import com.baikaleg.v3.popularmovies2.MovieViewModel;
 import com.baikaleg.v3.popularmovies2.R;
+import com.baikaleg.v3.popularmovies2.dagger.scopes.ActivityScoped;
 import com.baikaleg.v3.popularmovies2.data.Repository;
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.data.model.Review;
@@ -23,6 +24,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+@ActivityScoped
 public class DetailsViewModel extends MovieViewModel {
 
     private static final String TAG = DetailsViewModel.class.getSimpleName();
@@ -37,13 +39,13 @@ public class DetailsViewModel extends MovieViewModel {
 
     public final ObservableBoolean pagerExpanded = new ObservableBoolean(false);
 
-    public final ObservableField<Integer> currentPagerPage = new ObservableField<>();
+    public final ObservableField<Integer> currentPagerPage = new ObservableField<>(0);
 
-    private int imageHeight, imageWidth, mainViewHeight;
+    private int  mainViewHeight;
 
-    private Repository repository;
+    private final Repository repository;
 
-    private Context context;
+    private final Context context;
 
     @Inject
     public DetailsViewModel(Repository repository, Context context) {
@@ -116,30 +118,12 @@ public class DetailsViewModel extends MovieViewModel {
     }
 
     @Bindable
-    public int getImageHeight() {
-        return imageHeight;
-    }
-
-    void setImageHeight(int imageHeight) {
-        this.imageHeight = imageHeight;
-    }
-
-    @Bindable
     public float getMainViewHeight() {
         return mainViewHeight;
     }
 
     void setMainViewHeight(int mainViewHeight) {
         this.mainViewHeight = mainViewHeight;
-    }
-
-    @Bindable
-    public int getImageWidth() {
-        return imageWidth;
-    }
-
-    void setImageWidth(int imageWidth) {
-        this.imageWidth = imageWidth;
     }
 
     void setCurrentPagerPage(int page) {

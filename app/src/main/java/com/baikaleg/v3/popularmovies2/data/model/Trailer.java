@@ -9,28 +9,20 @@ import com.google.gson.annotations.SerializedName;
 public class Trailer extends BaseObservable {
     @SerializedName("key")
     @Expose
-    private String key;
-    @SerializedName("name")
-    @Expose
-    private String name;
+    private final String key;
     @SerializedName("site")
     @Expose
-    private String site;
-    @SerializedName("size")
-    @Expose
-    private String size;
+    private final String site;
     @SerializedName("type")
     @Expose
-    private String type;
+    private final String type;
 
 
     private String ordinalName;
 
-    public Trailer(String key, String name, String site, String size, String type) {
+    public Trailer(String key,  String site, String type) {
         this.key = key;
-        this.name = name;
         this.site = site;
-        this.size = size;
         this.type = type;
     }
 
@@ -46,17 +38,8 @@ public class Trailer extends BaseObservable {
         return key;
     }
 
-    @Bindable
-    public String getName() {
-        return name;
-    }
-
     public String getSite() {
         return site;
-    }
-
-    public String getSize() {
-        return size;
     }
 
     public String getType() {

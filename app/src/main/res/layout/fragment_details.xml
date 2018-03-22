@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:src="http://schemas.android.com/tools"
     tools:context="com.baikaleg.v3.popularmovies.ui.details.DetailsFragment"
     tools:showIn="@layout/activity_details">
 
@@ -40,9 +41,7 @@
                 android:layout_marginTop="@dimen/details_top_margin"
                 android:contentDescription="@string/cd_poster_of_movie"
                 android:visibility="@{viewmodel.pagerExpanded ||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                app:image="@{viewmodel.url}"
-                app:image_height="@{viewmodel.imageHeight}"
-                app:image_width="@{viewmodel.imageWidth}"
+                src:image="@{viewmodel.url}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -139,17 +138,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/details_rating_star"
                 app:layout_constraintStart_toEndOf="@+id/details_rating_star"
                 app:layout_constraintTop_toTopOf="@+id/details_rating_star" />
-
-            <ProgressBar
-                android:id="@+id/details_progress"
-                android:layout_width="wrap_content"
-                style="@style/Base.Widget.AppCompat.ProgressBar"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/details_general_margin"
-                android:visibility="@{viewmodel.dataLoading? View.VISIBLE: View.GONE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/details_overview_header_tv"

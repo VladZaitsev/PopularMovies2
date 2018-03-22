@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 
 import com.baikaleg.v3.popularmovies2.R;
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
@@ -23,10 +24,13 @@ import com.baikaleg.v3.popularmovies2.ui.movies.MoviesFilterType;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -36,11 +40,17 @@ import okio.BufferedSink;
 import okio.Okio;
 import retrofit2.Response;
 
+@Singleton
 public class Repository implements MovieDataSource {
     private static final String VIDEO_TYPE = "Trailer";
 
-    private Context context;
-    private MovieApi movieApi;
+    private final Context context;
+    private final MovieApi movieApi;
+    private boolean cacheIsDirty = false;
+
+
+    @Nullable
+    private Map<Integer, Movie> cachedMovies;
 
     @Inject
     public Repository(Context context, MovieApi movieApi) {
@@ -50,6 +60,19 @@ public class Repository implements MovieDataSource {
 
     @Override
     public Observable<List<Movie>> getMovies(MoviesFilterType type) {
+
+        // Respond immediately with cache if available and not dirty
+        if (cachedMovies != null && !cacheIsDirty) {
+            return Observable.fromIterable(cachedMovies.values()).toList().toObservable();
+        }
+
+        if (cachedMovies == null) {
+            cachedMovies = new LinkedHashMap<>();
+        }
+        if (cacheIsDirty) {
+            cachedMovies.clear();
+        }
+
         if (type == MoviesFilterType.POPULAR_MOVIES) {
             return getPopularMovies();
         } else if (type == MoviesFilterType.TOP_RATED_MOVIES) {
@@ -85,24 +108,53 @@ public class Repository implements MovieDataSource {
     @Override
     public void markMovieAsFavorite(Movie movie, boolean favorite) {
         Uri uri = MovieContract.MovieEntry.CONTENT_URI;
+        String remotePath = context.getString(R.string.image_base_url);
+        String localPath = (new File(Environment.getExternalStorageDirectory(), context.getPackageName())).getPath();
         if (favorite) {
-            String path = movie.getPosterPath().replace(context.getString(R.string.image_base_url) + "/", "");
-            movieApi.createService(context.getString(R.string.image_base_url) + "/")
-                    .downloadImage(path)
-                    .flatMap(responseBodyResponse -> saveToDisk(responseBodyResponse, path))
+            String imageName = movie.getPosterPath().replace(remotePath+"/", "");
+            movieApi.createService(remotePath+"/")
+                    .downloadImage(imageName)
+                    .flatMap(responseBodyResponse -> saveToDisk(responseBodyResponse, imageName))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(file -> {
                         movie.setPosterPath(file.getPath());
                         movie.setFavorite(1);
+
+                        //Do in memory cache update to keep the app UI up to date
+                        if (cachedMovies == null) {
+                            cachedMovies = new LinkedHashMap<>();
+                        }
+                        cachedMovies.put(movie.getId(), movie);
+
+                        //saving favorite movie to local database
                         context.getContentResolver().insert(uri, getContentValues(movie));
                     });
         } else {
+            String imageName = movie.getPosterPath().replace(localPath, "");
+            //deleting image from local storage
+            deleteImage(movie.getPosterPath());
+
+            // unmarking as favorite
+            movie.setFavorite(0);
+            //changing image path to internet url
+            movie.setPosterPath(remotePath + imageName);
+
+            if (cachedMovies == null) {
+                cachedMovies = new LinkedHashMap<>();
+            }
+            cachedMovies.put(movie.getId(), movie);
+
+            //deleting favorite movie from local database
             String selection = MovieEntry.ID + " = ? ";
             String[] selectionArgs = new String[]{Integer.toString(movie.getId())};
-            deleteImage(movie.getPosterPath());
             context.getContentResolver().delete(uri, selection, selectionArgs);
         }
+    }
+
+    @Override
+    public void refreshMovies() {
+        cacheIsDirty = true;
     }
 
     private Observable<List<Movie>> getPopularMovies() {
@@ -118,12 +170,17 @@ public class Repository implements MovieDataSource {
                             String[] selectionArgs = new String[]{String.valueOf(movie.getId())};
                             try (Cursor cursor = queryMovies(selection, selectionArgs)) {
                                 if (cursor.getCount() != 0) {
+                                    cursor.moveToFirst();
+                                    String localPosterPath = cursor.getString(cursor.getColumnIndex(MovieEntry.POSTER_PATH));
                                     movie.setFavorite(1);
+                                    movie.setPosterPath(localPosterPath);
                                 }
                             }
+                            cachedMovies.put(movie.getId(), movie);
                         })
                         .toList()
-                        .toObservable());
+                        .toObservable()
+                );
     }
 
     private Observable<List<Movie>> getTopRatedMovies() {
@@ -139,12 +196,17 @@ public class Repository implements MovieDataSource {
                             String[] selectionArgs = new String[]{String.valueOf(movie.getId())};
                             try (Cursor cursor = queryMovies(selection, selectionArgs)) {
                                 if (cursor.getCount() != 0) {
+                                    cursor.moveToFirst();
+                                    String localPosterPath = cursor.getString(cursor.getColumnIndex(MovieEntry.POSTER_PATH));
                                     movie.setFavorite(1);
+                                    movie.setPosterPath(localPosterPath);
                                 }
                             }
+                            cachedMovies.put(movie.getId(), movie);
                         })
                         .toList()
-                        .toObservable());
+                        .toObservable()
+                );
     }
 
     private Observable<List<Movie>> getFavoriteMovies() {
@@ -170,6 +232,7 @@ public class Repository implements MovieDataSource {
                     movie.setFavorite(1);
 
                     movies.add(movie);
+                    cachedMovies.put(movie.getId(), movie);
                     cursor.moveToNext();
                 }
             }
@@ -237,6 +300,5 @@ public class Repository implements MovieDataSource {
                 return null;
             }
         }.execute();
-
     }
 }

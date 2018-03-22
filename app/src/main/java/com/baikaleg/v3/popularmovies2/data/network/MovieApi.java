@@ -1,9 +1,6 @@
 package com.baikaleg.v3.popularmovies2.data.network;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
-
-import com.baikaleg.v3.popularmovies2.R;
 
 import javax.inject.Inject;
 
@@ -14,11 +11,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieApi {
 
-    private final Context context;
-
     @Inject
-    MovieApi(Context context) {
-        this.context = context;
+    MovieApi() {
+
     }
 
     @NonNull

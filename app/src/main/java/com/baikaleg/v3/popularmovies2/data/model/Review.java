@@ -6,12 +6,12 @@ import com.google.gson.annotations.SerializedName;
 public class Review {
     @SerializedName("author")
     @Expose
-    private String author;
+    private final String author;
     @SerializedName("content")
     @Expose
-    private String content;
+    private final String content;
 
-    public Review(String id, String author, String content, String url) {
+    public Review(String author, String content) {
         this.author = author;
         this.content = content;
     }

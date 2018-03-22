@@ -1,7 +1,6 @@
 package com.baikaleg.v3.popularmovies2.data.network;
 
 import com.baikaleg.v3.popularmovies2.BuildConfig;
-import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.data.network.response.MoviesResponse;
 import com.baikaleg.v3.popularmovies2.data.network.response.ReviewsResponse;
 import com.baikaleg.v3.popularmovies2.data.network.response.TrailersResponse;

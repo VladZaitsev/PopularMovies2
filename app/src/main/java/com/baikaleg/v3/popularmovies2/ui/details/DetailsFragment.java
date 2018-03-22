@@ -2,6 +2,7 @@ package com.baikaleg.v3.popularmovies2.ui.details;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -36,8 +37,17 @@ public class DetailsFragment extends DaggerFragment {
     @Override
     public void onResume() {
         super.onResume();
-        viewModel.setMovie(movie);
         viewModel.start();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null && savedInstanceState.containsKey(getString(R.string.movie_key))) {
+            viewModel.setMovie(savedInstanceState.getParcelable(getString(R.string.movie_key)));
+        }else {
+            viewModel.setMovie(this.movie);
+        }
     }
 
     @Override
@@ -49,8 +59,6 @@ public class DetailsFragment extends DaggerFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHeightAndWidthOfImage();
-
         binding = FragmentDetailsBinding.inflate(inflater, container, false);
         binding.setViewmodel(viewModel);
         binding.setView(this);
@@ -59,6 +67,8 @@ public class DetailsFragment extends DaggerFragment {
             binding.detailsScrollView.pageScroll(ScrollView.FOCUS_UP);
             binding.detailsScrollView.setScrollingEnabled(expanded);
         });
+
+        setHeightAndWidthOfImage();
 
         ReviewPagerAdapter adapter = new ReviewPagerAdapter();
         binding.detailsPagerReviews.setAdapter(adapter);
@@ -84,6 +94,12 @@ public class DetailsFragment extends DaggerFragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(getString(R.string.movie_key), viewModel.getMovie());
+        super.onSaveInstanceState(outState);
+    }
+
     private void setHeightAndWidthOfImage() {
         TypedValue tv = new TypedValue();
         int actionBarHeight = getActivity().getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)
@@ -96,10 +112,13 @@ public class DetailsFragment extends DaggerFragment {
             imageWidth = getResources().getDisplayMetrics().widthPixels / 2;
         } else if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             imageWidth = getResources().getDisplayMetrics().widthPixels / 4;
-            imageHeight =imageWidth*4/3;
+            imageHeight = imageWidth * 4 / 3;
         }
         viewModel.setMainViewHeight(mainViewHeight - actionBarHeight);
-        viewModel.setImageWidth(imageWidth);
-        viewModel.setImageHeight(imageHeight);
+
+        ViewGroup.LayoutParams params = binding.detailsMainImg.getLayoutParams();
+        params.width = imageWidth;
+        params.height = imageHeight;
+        binding.detailsMainImg.setLayoutParams(params);
     }
 }

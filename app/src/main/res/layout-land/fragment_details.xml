@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:src="http://schemas.android.com/tools"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.baikaleg.v3.popularmovies.ui.details.DetailsFragment"
     tools:showIn="@layout/activity_details">
@@ -25,245 +26,249 @@
         android:fillViewport="true"
         android:paddingBottom="@dimen/details_top_margin">
 
-        <android.support.constraint.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/details_main_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="@dimen/details_general_margin"
-                android:layout_marginStart="@dimen/details_general_margin"
-                android:layout_marginTop="@dimen/details_top_margin"
-                android:contentDescription="@string/cd_poster_of_movie"
-                android:visibility="@{viewmodel.pagerExpanded ||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                app:image="@{viewmodel.url}"
-                app:image_height="@{viewmodel.imageHeight}"
-                app:image_width="@{viewmodel.imageWidth}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:id="@+id/details_trailers_container"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/details_general_margin"
-                android:layout_marginStart="@dimen/details_general_margin"
-                android:layout_marginTop="@dimen/details_top_margin"
-                android:orientation="horizontal"
-                app:layout="@{viewmodel.trailerLayout}"
-                android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/details_main_img"
-                app:layout_constraintTop_toBottomOf="@+id/details_date_tv"
-                app:trailers="@{viewmodel.trailersList}" />
-
-            <ImageView
-                android:id="@+id/details_favorite_backgorund"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/cd_favorite"
-                android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@+id/details_main_img"
-                app:layout_constraintEnd_toEndOf="@+id/details_main_img"
-                app:srcCompat="@drawable/ic_background" />
-
-            <ImageView
-                android:id="@+id/details_favorite_ib"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/cd_favorite"
-                android:onClick="@{()->viewmodel.favoriteBtnClicked()}"
-                android:src="@{viewmodel.favorite ? @drawable/ic_favorite : @drawable/ic_unfavorite}"
-                android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@+id/details_favorite_backgorund"
-                app:layout_constraintEnd_toEndOf="@+id/details_favorite_backgorund"
-                app:layout_constraintStart_toStartOf="@+id/details_favorite_backgorund"
-                app:layout_constraintTop_toTopOf="@+id/details_favorite_backgorund" />
-
-            <TextView
-                android:id="@+id/details_date_header_tv"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="@dimen/details_top_margin"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/details_general_margin"
-                android:layout_marginStart="@dimen/details_general_margin"
-                android:text="@string/release_date"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                app:layout_constraintStart_toEndOf="@+id/details_main_img"
-                app:layout_constraintTop_toTopOf="parent"  />
-
-            <TextView
-                android:id="@+id/details_date_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/details_general_margin"
-                android:layout_marginStart="@dimen/details_general_margin"
-                android:layout_marginTop="@dimen/details_top_margin"
-                android:text="@{viewmodel.date}"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:textStyle="bold"
-                android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                app:layout_constraintStart_toEndOf="@+id/details_main_img"
-                app:layout_constraintTop_toBottomOf="@+id/details_date_header_tv" />
-
-            <ImageView
-                android:id="@+id/details_rating_star"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/details_general_margin"
-                android:layout_marginStart="@dimen/details_general_margin"
-                android:layout_marginTop="@dimen/details_top_margin"
-                android:contentDescription="@string/cd_rating"
-                android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                app:layout_constraintStart_toEndOf="@+id/details_main_img"
-                app:layout_constraintTop_toBottomOf="@+id/details_date_tv"
-                app:srcCompat="@drawable/ic_star" />
-
-            <TextView
-                android:id="@+id/details_rating_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/details_top_margin"
-                android:layout_marginStart="@dimen/details_top_margin"
-                android:text="@{@string/vote_average(viewmodel.voteAverage)}"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@+id/details_rating_star"
-                app:layout_constraintStart_toEndOf="@+id/details_rating_star"
-                app:layout_constraintTop_toTopOf="@+id/details_rating_star" />
-
-            <ProgressBar
-                android:id="@+id/details_progress"
-                android:layout_width="wrap_content"
-                style="@style/Base.Widget.AppCompat.ProgressBar"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/details_general_margin"
-                android:visibility="@{viewmodel.dataLoading? View.VISIBLE: View.GONE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/details_overview_header_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="@dimen/details_top_margin"
-                android:text="@string/overview"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                app:layout_constraintEnd_toEndOf="@+id/details_trailers_container"
-                app:layout_constraintStart_toStartOf="@+id/details_trailers_container"
-                app:layout_constraintTop_toBottomOf="@+id/details_trailers_container" />
-
-            <TextView
-                android:id="@+id/details_overview_tv"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-
-                android:text="@{viewmodel.overview}"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@+id/details_main_img"
-                app:layout_constraintEnd_toEndOf="@+id/details_overview_header_tv"
-                app:layout_constraintStart_toStartOf="@+id/details_overview_header_tv"
-                app:layout_constraintTop_toBottomOf="@+id/details_overview_header_tv" />
-
-            <TextView
-                android:id="@+id/details_pager_header_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginEnd="@dimen/details_general_margin"
-                android:layout_marginStart="@dimen/details_general_margin"
-                android:layout_marginTop="@dimen/details_top_margin"
-                android:text="@{@string/review_header(viewmodel.currentPagerPage,viewmodel.reviewsList.size())}"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:visibility="@{viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/details_main_img" />
-
-            <View
-                android:id="@+id/detail_pager_divider"
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginEnd="@dimen/details_general_margin"
-                android:layout_marginStart="@dimen/details_general_margin"
-                android:background="@color/colorPrimary"
-                android:visibility="@{viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                app:layout_constraintTop_toBottomOf="@+id/details_pager_header_tv" />
-
-            <ImageView
-                android:id="@+id/details_pager_container_resize_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="@dimen/details_general_margin"
-                android:layout_marginRight="@dimen/details_general_margin"
-                android:contentDescription="@string/cd_expand"
-                android:onClick="@{()->viewmodel.expandBtnClicked()}"
-                android:src="@{viewmodel.pagerExpanded ? @drawable/ic_unfold_less: @drawable/ic_unfold_more}"
-                android:visibility="@{viewmodel.reviewsList.size()==0||viewmodel.dataLoading?View.GONE: View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@+id/details_pager_header_tv"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/details_pager_header_tv" />
-
-            <RelativeLayout
-                android:id="@+id/details_pager_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="@dimen/details_top_margin"
-                android:visibility="@{viewmodel.reviewsList.size()==0||viewmodel.reviewsList==null||viewmodel.dataLoading?View.GONE: View.VISIBLE}"
-                app:layout_constraintTop_toBottomOf="@+id/detail_pager_divider">
+                android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/details_pager_container_left_btn"
-                    android:layout_width="@dimen/details_general_margin"
+                    android:id="@+id/details_main_img"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:contentDescription="@string/cd_to_left"
-                    android:visibility="@{viewmodel.currentPagerPage==1? View.INVISIBLE: View.VISIBLE}"
-                    app:srcCompat="@drawable/ic_more_vert" />
+                    android:layout_marginLeft="@dimen/details_general_margin"
+                    android:layout_marginStart="@dimen/details_general_margin"
+                    android:layout_marginTop="@dimen/details_top_margin"
+                    android:contentDescription="@string/cd_poster_of_movie"
+                    android:visibility="@{viewmodel.pagerExpanded ||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
+                    src:image="@{viewmodel.url}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/details_pager_container_right_btn"
-                    android:layout_width="@dimen/details_general_margin"
+                    android:id="@+id/details_favorite_backgorund"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:contentDescription="@string/cd_to_right"
-                    android:visibility="@{viewmodel.currentPagerPage==viewmodel.reviewsList.size()? View.INVISIBLE: View.VISIBLE}"
-                    app:srcCompat="@drawable/ic_more_vert" />
+                    android:contentDescription="@string/cd_favorite"
+                    android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/details_main_img"
+                    app:layout_constraintEnd_toEndOf="@+id/details_main_img"
+                    app:srcCompat="@drawable/ic_background" />
 
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/details_pager_reviews"
+                <ImageView
+                    android:id="@+id/details_favorite_ib"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/cd_favorite"
+                    android:onClick="@{()->viewmodel.favoriteBtnClicked()}"
+                    android:src="@{viewmodel.favorite ? @drawable/ic_favorite : @drawable/ic_unfavorite}"
+                    android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/details_favorite_backgorund"
+                    app:layout_constraintEnd_toEndOf="@+id/details_favorite_backgorund"
+                    app:layout_constraintStart_toStartOf="@+id/details_favorite_backgorund"
+                    app:layout_constraintTop_toTopOf="@+id/details_favorite_backgorund" />
+
+                <TextView
+                    android:id="@+id/details_date_header_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/details_general_margin"
+                    android:layout_marginStart="@dimen/details_general_margin"
+                    android:layout_marginTop="@dimen/details_top_margin"
+                    android:text="@string/release_date"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
+                    app:layout_constraintStart_toEndOf="@+id/details_main_img"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/details_date_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/details_general_margin"
+                    android:layout_marginStart="@dimen/details_general_margin"
+                    android:layout_marginTop="@dimen/details_top_margin"
+                    android:text="@{viewmodel.date}"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:textStyle="bold"
+                    android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
+                    app:layout_constraintStart_toEndOf="@+id/details_main_img"
+                    app:layout_constraintTop_toBottomOf="@+id/details_date_header_tv" />
+
+                <TextView
+                    android:id="@+id/details_rating_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/details_general_margin"
+                    android:layout_marginRight="@dimen/details_general_margin"
+                    android:text="@{@string/vote_average(viewmodel.voteAverage)}"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/details_date_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/details_date_header_tv" />
+
+                <ImageView
+                    android:id="@+id/details_rating_star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/details_general_margin"
+                    android:layout_marginRight="@dimen/details_general_margin"
+                    android:contentDescription="@string/cd_rating"
+                    android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/details_rating_tv"
+                    app:layout_constraintEnd_toStartOf="@+id/details_rating_tv"
+                    app:layout_constraintTop_toTopOf="@+id/details_rating_tv"
+                    app:srcCompat="@drawable/ic_star" />
+
+                <LinearLayout
+                    android:id="@+id/details_trailers_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/details_general_margin"
+                    android:layout_marginStart="@dimen/details_general_margin"
+                    android:layout_marginTop="@dimen/details_top_margin"
+                    android:orientation="horizontal"
+                    android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
+                    app:layout="@{viewmodel.trailerLayout}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/details_main_img"
+                    app:layout_constraintTop_toBottomOf="@+id/details_date_tv"
+                    app:trailers="@{viewmodel.trailersList}" />
+
+                <TextView
+                    android:id="@+id/details_overview_header_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="@dimen/details_general_margin"
+                    android:layout_marginStart="@dimen/details_general_margin"
+                    android:layout_marginTop="@dimen/details_top_margin"
+                    android:text="@string/overview"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/details_main_img"
+                    app:layout_constraintTop_toBottomOf="@+id/details_trailers_container" />
+
+                <TextView
+                    android:id="@+id/details_overview_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/details_general_margin"
+                    android:layout_marginStart="@dimen/details_general_margin"
+                    android:layout_marginTop="@dimen/details_top_margin"
+                    android:text="@{viewmodel.overview}"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/details_main_img"
+                    app:layout_constraintTop_toBottomOf="@+id/details_overview_header_tv" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/details_pager_header_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="@dimen/details_general_margin"
+                    android:layout_marginStart="@dimen/details_general_margin"
+                    android:layout_marginTop="@dimen/details_top_margin"
+                    android:text="@{@string/review_header(viewmodel.currentPagerPage,viewmodel.reviewsList.size())}"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:visibility="@{viewmodel.dataLoading? View.GONE: View.VISIBLE}"
+                    app:layout_constraintEnd_toStartOf="@+id/details_pager_container_resize_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/detail_pager_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="@dimen/details_general_margin"
+                    android:layout_marginStart="@dimen/details_general_margin"
+                    android:background="@color/colorPrimary"
+                    android:visibility="@{viewmodel.dataLoading? View.GONE: View.VISIBLE}"
+                    app:layout_constraintTop_toBottomOf="@+id/details_pager_header_tv" />
+
+                <ImageView
+                    android:id="@+id/details_pager_container_resize_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="@dimen/details_general_margin"
+                    android:layout_marginRight="@dimen/details_general_margin"
+                    android:contentDescription="@string/cd_expand"
+                    android:onClick="@{()->viewmodel.expandBtnClicked()}"
+                    android:src="@{viewmodel.pagerExpanded ? @drawable/ic_unfold_less: @drawable/ic_unfold_more}"
+                    android:visibility="@{viewmodel.reviewsList.size()==0||viewmodel.dataLoading?View.GONE: View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/details_pager_header_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/details_pager_header_tv" />
+
+                <RelativeLayout
+                    android:id="@+id/details_pager_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/details_pager_container_left_btn"
-                    android:layout_toLeftOf="@+id/details_pager_container_right_btn"
-                    android:layout_toRightOf="@+id/details_pager_container_left_btn"
-                    android:layout_toStartOf="@+id/details_pager_container_right_btn"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    app:pager_height="@{viewmodel.pagerExpanded ? viewmodel.mainViewHeight : @dimen/details_pager_height}"
-                    app:reviews="@{viewmodel.reviewsList}" />
-            </RelativeLayout>
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="@dimen/details_top_margin"
+                    android:visibility="@{viewmodel.reviewsList.size()==0||viewmodel.reviewsList==null||viewmodel.dataLoading?View.GONE: View.VISIBLE}"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_pager_divider">
 
-        </android.support.constraint.ConstraintLayout>
+                    <ImageView
+                        android:id="@+id/details_pager_container_left_btn"
+                        android:layout_width="@dimen/details_general_margin"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@string/cd_to_left"
+                        android:visibility="@{viewmodel.currentPagerPage==1? View.INVISIBLE: View.VISIBLE}"
+                        app:srcCompat="@drawable/ic_more_vert" />
+
+                    <ImageView
+                        android:id="@+id/details_pager_container_right_btn"
+                        android:layout_width="@dimen/details_general_margin"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@string/cd_to_right"
+                        android:visibility="@{viewmodel.currentPagerPage==viewmodel.reviewsList.size()? View.INVISIBLE: View.VISIBLE}"
+                        app:srcCompat="@drawable/ic_more_vert" />
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/details_pager_reviews"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/details_pager_container_left_btn"
+                        android:layout_toLeftOf="@+id/details_pager_container_right_btn"
+                        android:layout_toRightOf="@+id/details_pager_container_left_btn"
+                        android:layout_toStartOf="@+id/details_pager_container_right_btn"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        app:pager_height="@{viewmodel.pagerExpanded ? viewmodel.mainViewHeight : @dimen/details_pager_height}"
+                        app:reviews="@{viewmodel.reviewsList}" />
+                </RelativeLayout>
+            </android.support.constraint.ConstraintLayout>
+
+        </LinearLayout>
+
 
     </com.baikaleg.v3.popularmovies2.ui.details.ReviewScrollView>
 

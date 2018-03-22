@@ -1,11 +1,12 @@
 package com.baikaleg.v3.popularmovies2.ui.movies;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import com.baikaleg.v3.popularmovies2.R;
 import com.baikaleg.v3.popularmovies2.dagger.scopes.ActivityScoped;
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.databinding.FragmentMoviesBinding;
+import com.baikaleg.v3.popularmovies2.ui.details.DetailsActivity;
 import com.baikaleg.v3.popularmovies2.ui.movies.adapter.MoviesViewAdapter;
 
 import javax.inject.Inject;
@@ -30,7 +32,7 @@ import dagger.android.support.DaggerFragment;
  * {@link MoviesFilterType#FAVORITE_MOVIES}
  */
 @ActivityScoped
-public class MoviesFragment extends DaggerFragment {
+public class MoviesFragment extends DaggerFragment implements MovieItemNavigator {
 
     private MoviesViewAdapter viewAdapter;
 
@@ -61,12 +63,15 @@ public class MoviesFragment extends DaggerFragment {
         setHasOptionsMenu(true);
         setRowsAndColumnsQuantity();
 
+
         FragmentMoviesBinding binding = FragmentMoviesBinding.inflate(inflater, container, false);
         binding.setViewmodel(moviesViewModel);
         binding.setView(this);
 
+        LinearLayoutManager layoutManager = new GridLayoutManager(getActivity().getApplicationContext(), columns);
+
         viewAdapter = createAdapter();
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity().getApplicationContext(), columns);
+
         binding.moviesRv.setAdapter(viewAdapter);
         binding.moviesRv.setLayoutManager(layoutManager);
 
@@ -100,7 +105,7 @@ public class MoviesFragment extends DaggerFragment {
                 moviesViewModel.setFiltering(MoviesFilterType.FAVORITE_MOVIES);
                 break;
         }
-        moviesViewModel.loadMovies();
+        moviesViewModel.loadMovies(true);
         return true;
     }
 
@@ -114,11 +119,18 @@ public class MoviesFragment extends DaggerFragment {
         int imageHeight = (getResources().getDisplayMetrics().heightPixels - actionBarHeight) / rows;
         int imageWidth = getResources().getDisplayMetrics().widthPixels / columns;
 
-        MoviesViewAdapter adapter = new MoviesViewAdapter((MoviesActivity) getActivity());
+        MoviesViewAdapter adapter = new MoviesViewAdapter(this);
         adapter.setViewSize(imageWidth, imageHeight);
-        adapter.refreshAdapter(moviesViewModel.items);
         return adapter;
     }
+
+    @Override
+    public void openMovieDetails(Movie movie) {
+        Intent intent = new Intent(getActivity(), DetailsActivity.class);
+        intent.putExtra(DetailsActivity.EXTRA_MOVIE, movie);
+        startActivity(intent);
+    }
+
 
     private void setRowsAndColumnsQuantity() {
         if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {

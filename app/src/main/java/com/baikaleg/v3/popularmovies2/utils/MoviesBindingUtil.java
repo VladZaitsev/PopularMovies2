@@ -24,7 +24,6 @@ import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.data.model.Review;
 import com.baikaleg.v3.popularmovies2.data.model.Trailer;
 import com.baikaleg.v3.popularmovies2.ui.details.adapter.ReviewPagerAdapter;
-import com.baikaleg.v3.popularmovies2.ui.movies.MoviesFilterType;
 import com.baikaleg.v3.popularmovies2.ui.movies.MoviesViewModel;
 import com.baikaleg.v3.popularmovies2.ui.movies.adapter.MoviesViewAdapter;
 import com.squareup.picasso.Picasso;
@@ -46,20 +45,22 @@ public class MoviesBindingUtil {
     private MoviesBindingUtil() {
     }
 
-    @BindingAdapter({"app:image", "app:image_height", "app:image_width"})
-    public static void setImageUrl(@NonNull ImageView imageView, @NonNull String url, int height, int width) {
+    @BindingAdapter({"src:image"})
+    public static void setImageUrl(@NonNull ImageView imageView, @NonNull String url) {
         if (TextUtils.isEmpty(url)) {
             return;
         }
-        if(url.contains(Environment.getExternalStorageDirectory().toString())){
+        if (url.contains(Environment.getExternalStorageDirectory().toString())) {
             Picasso.with(imageView.getContext())
                     .load(new File(url))
-                    .resize(width, height)
+                    .fit()
+                    .placeholder(imageView.getContext().getResources().getDrawable(R.drawable.ic_image))
                     .into(imageView);
-        }else {
+        } else {
             Picasso.with(imageView.getContext())
                     .load(url)
-                    .resize(width, height)
+                    .fit()
+                    .placeholder(imageView.getContext().getResources().getDrawable(R.drawable.ic_image))
                     .into(imageView);
         }
 
@@ -76,7 +77,7 @@ public class MoviesBindingUtil {
 
     @BindingAdapter("app:onRefresh")
     public static void setSwipeRefreshLayoutOnRefreshListener(SwipeRefreshLayout view, final MoviesViewModel viewModel) {
-        view.setOnRefreshListener(viewModel::loadMovies);
+        view.setOnRefreshListener(() -> viewModel.loadMovies(true));
     }
 
 

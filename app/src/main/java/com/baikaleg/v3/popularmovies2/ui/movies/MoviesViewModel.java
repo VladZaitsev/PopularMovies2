@@ -30,7 +30,6 @@ public class MoviesViewModel extends BaseObservable {
 
     private final Repository repository;
 
-
     private MoviesFilterType currentFilterType = MoviesFilterType.POPULAR_MOVIES;
 
     @NonNull
@@ -44,8 +43,8 @@ public class MoviesViewModel extends BaseObservable {
         setFiltering(MoviesFilterType.POPULAR_MOVIES);
     }
 
-    void start() {
-        loadMovies();
+    public void start() {
+        loadMovies(false);
     }
 
     @Bindable
@@ -73,21 +72,33 @@ public class MoviesViewModel extends BaseObservable {
         return currentFilterType;
     }
 
-    public void loadMovies() {
-        isDataLoadingError.set(false);
-        dataLoading.set(true);
+    public void loadMovies(final boolean forceUpdate) {
+        loadMovies(forceUpdate, true);
+    }
 
+    private void loadMovies(final boolean forceUpdate, final boolean showLoadingUI) {
+        if (showLoadingUI) {
+            dataLoading.set(true);
+        }
+
+        if (forceUpdate) {
+            repository.refreshMovies();
+        }
+
+        compositeDisposable.clear();
         Disposable disposable = repository.getMovies(currentFilterType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movies -> {
+                    if (showLoadingUI) {
+                        dataLoading.set(false);
+                    }
+                    isDataLoadingError.set(false);
                     items.clear();
                     items.addAll(movies);
-                    dataLoading.set(false);
-                    isDataLoadingError.set(false);
                     notifyPropertyChanged(BR.empty);
                 }, throwable -> showError());
-        compositeDisposable.clear();
+
         compositeDisposable.add(disposable);
     }
 

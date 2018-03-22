@@ -4,7 +4,6 @@ import android.databinding.BaseObservable;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
 
-import com.baikaleg.v3.popularmovies2.BR;
 import com.baikaleg.v3.popularmovies2.data.model.Review;
 
 public class ReviewItemViewModel extends BaseObservable {

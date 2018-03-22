@@ -1,6 +1,5 @@
 package com.baikaleg.v3.popularmovies2.ui.movies.adapter;
 
-import android.databinding.Bindable;
 import android.support.annotation.Nullable;
 
 import com.baikaleg.v3.popularmovies2.MovieViewModel;
@@ -10,15 +9,12 @@ import com.baikaleg.v3.popularmovies2.ui.movies.MovieItemNavigator;
 import java.lang.ref.WeakReference;
 
 public class MovieItemViewModel extends MovieViewModel {
-    private final int height, width;
 
     @Nullable
     private WeakReference<MovieItemNavigator> navigator;
 
-    MovieItemViewModel(int height, int width) {
+    MovieItemViewModel() {
         super();
-        this.height = height;
-        this.width = width;
     }
 
     void setNavigator(@Nullable MovieItemNavigator navigator) {
@@ -35,13 +31,4 @@ public class MovieItemViewModel extends MovieViewModel {
         }
     }
 
-    @Bindable
-    public int getHeight() {
-        return height;
-    }
-
-    @Bindable
-    public int getWidth() {
-        return width;
-    }
 }

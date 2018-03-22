@@ -27,11 +27,6 @@ public class DetailsActivity extends DaggerAppCompatActivity {
     DetailsFragment fragment;
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);

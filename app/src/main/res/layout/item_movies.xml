@@ -1,5 +1,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:src="http://schemas.android.com/tools">
 
     <data>
 
@@ -16,7 +17,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:onClick="@{()->viewmodel.movieClicked()}">
 
         <ImageView
@@ -24,9 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/cd_poster_of_movie"
-            app:image="@{viewmodel.url}"
-            app:image_height="@{viewmodel.height}"
-            app:image_width="@{viewmodel.width}" />
+            src:image="@{viewmodel.url}" />
 
         <ImageView
             android:id="@+id/movie_item_vote_back"

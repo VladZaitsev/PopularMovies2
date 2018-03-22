@@ -6,5 +6,5 @@
 
     <color name="favorite">#ce2a11</color>
     <color name="unFavorite">#7e8489</color>
-    <color name="circle_background">#e0e0e0</color>
+    <color name="colorBackground">#e0e0e0</color>
 </resources>

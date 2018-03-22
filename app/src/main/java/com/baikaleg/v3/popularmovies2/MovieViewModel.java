@@ -29,13 +29,16 @@ public abstract class MovieViewModel extends BaseObservable {
 
     public final ObservableField<Boolean> favorite = new ObservableField<>(false);
 
-
     public MovieViewModel() {
         movieObservable.addOnPropertyChangedCallback(callback);
     }
 
     public void setMovie(Movie movie) {
         movieObservable.set(movie);
+    }
+
+    public Movie getMovie() {
+        return movieObservable.get();
     }
 
     protected OnPropertyChangedCallback callback = new OnPropertyChangedCallback() {
@@ -48,9 +51,9 @@ public abstract class MovieViewModel extends BaseObservable {
                 date.set(movie.getReleaseDate());
                 url.set(movie.getPosterPath());
                 voteAverage.set(String.valueOf(movie.getVoteAverage()));
-                if(movie.getFavorite()==1){
+                if (movie.getFavorite() == 1) {
                     favorite.set(true);
-                }else {
+                } else {
                     favorite.set(false);
                 }
                 notifyChange();

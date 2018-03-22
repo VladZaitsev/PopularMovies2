@@ -1,19 +1,16 @@
 package com.baikaleg.v3.popularmovies2.ui.movies;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 
 import com.baikaleg.v3.popularmovies2.R;
-import com.baikaleg.v3.popularmovies2.data.model.Movie;
-import com.baikaleg.v3.popularmovies2.ui.details.DetailsActivity;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 
-public class MoviesActivity extends DaggerAppCompatActivity implements MovieItemNavigator {
+public class MoviesActivity extends DaggerAppCompatActivity {
 
     @Inject
     MoviesViewModel viewModel;
@@ -58,12 +55,6 @@ public class MoviesActivity extends DaggerAppCompatActivity implements MovieItem
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void openMovieDetails(Movie movie) {
-        Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra(DetailsActivity.EXTRA_MOVIE, movie);
-        startActivity(intent);
-    }
 
     @SuppressWarnings("ConstantConditions")
     public void setActionBarTitle(String title) {

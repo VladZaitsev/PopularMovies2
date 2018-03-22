@@ -5,7 +5,7 @@
 
         <variable
             name="reviewmodel"
-            type="com.baikaleg.v3.popularmovies2.ui.details.adapter.ReviewItemViewModel" />
+            type="com.baikaleg.v3.popularmovies2.ui.details.reviews.ReviewItemViewModel" />
     </data>
 
     <ScrollView

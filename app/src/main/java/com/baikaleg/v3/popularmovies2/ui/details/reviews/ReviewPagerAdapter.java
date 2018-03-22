@@ -1,4 +1,4 @@
-package com.baikaleg.v3.popularmovies2.ui.details.adapter;
+package com.baikaleg.v3.popularmovies2.ui.details.reviews;
 
 import android.databinding.DataBindingUtil;
 import android.support.v4.view.PagerAdapter;

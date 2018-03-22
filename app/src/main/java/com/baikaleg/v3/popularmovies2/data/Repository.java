@@ -42,7 +42,6 @@ import retrofit2.Response;
 
 @Singleton
 public class Repository implements MovieDataSource {
-    private static final String VIDEO_TYPE = "Trailer";
 
     private final Context context;
     private final MovieApi movieApi;
@@ -95,13 +94,7 @@ public class Repository implements MovieDataSource {
     public Observable<List<Trailer>> getTrailers(int id) {
         return movieApi.createService(context.getString(R.string.base_url))
                 .getTrailers(id)
-                .map(TrailersResponse::getTrailers)
-                .flatMap(trailers ->
-                        Observable.fromIterable(trailers)
-                                .filter(trailer -> trailer.getType().equals(VIDEO_TYPE)))
-                .take(3)
-                .toList()
-                .toObservable();
+                .map(TrailersResponse::getTrailers);
     }
 
     @SuppressLint("StaticFieldLeak")

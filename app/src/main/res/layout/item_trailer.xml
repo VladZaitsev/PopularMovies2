@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:src="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-            name="data"
-            type="com.baikaleg.v3.popularmovies2.data.model.Trailer" />
+            name="viewmodel"
+            type="com.baikaleg.v3.popularmovies2.ui.details.trailers.TrailerViewModel" />
     </data>
 
-
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/details_top_margin"
-        android:layout_marginTop="@dimen/details_top_margin"
-        android:text="@{data.ordinalName}"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
+        android:contentDescription="@string/cd_trailer"
+        android:onClick="@{()->viewmodel.onTrailerClicked()}"
+        src:image="@{@string/trailer_thumbnail_url(viewmodel.key)}" />
 </layout>

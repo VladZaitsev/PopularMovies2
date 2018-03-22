@@ -1,4 +1,4 @@
-package com.baikaleg.v3.popularmovies2.ui.movies;
+package com.baikaleg.v3.popularmovies2.ui.movies.adapter;
 
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
 

@@ -45,24 +45,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:id="@+id/details_trailers_container"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginEnd="@dimen/details_general_margin"
-                android:layout_marginLeft="@dimen/details_general_margin"
-                android:layout_marginRight="@dimen/details_general_margin"
-                android:layout_marginStart="@dimen/details_general_margin"
-                android:layout_marginTop="@dimen/details_top_margin"
-                android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
-                android:orientation="vertical"
-                app:layout="@{viewmodel.trailerLayout}"
-                app:layout_constraintBottom_toBottomOf="@+id/details_main_img"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/details_main_img"
-                app:layout_constraintTop_toBottomOf="@+id/details_rating_tv"
-                app:trailers="@{viewmodel.trailersList}" />
-
             <ImageView
                 android:id="@+id/details_favorite_backgorund"
                 android:layout_width="wrap_content"
@@ -167,6 +149,19 @@
                 android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
                 app:layout_constraintTop_toBottomOf="@+id/details_overview_header_tv" />
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/details_trailers_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/details_general_margin"
+                android:layout_marginStart="@dimen/details_general_margin"
+                android:layout_marginTop="@dimen/details_top_margin"
+                android:visibility="@{viewmodel.pagerExpanded||viewmodel.dataLoading? View.GONE: View.VISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/details_overview_tv"
+                app:trailers="@{viewmodel.trailersList}" />
+
             <TextView
                 android:id="@+id/details_pager_header_tv"
                 android:layout_width="0dp"
@@ -181,7 +176,7 @@
                 android:visibility="@{viewmodel.dataLoading? View.GONE: View.VISIBLE}"
                 app:layout_constraintEnd_toStartOf="@+id/details_pager_container_resize_btn"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/details_overview_tv" />
+                app:layout_constraintTop_toBottomOf="@+id/details_trailers_container" />
 
             <View
                 android:id="@+id/detail_pager_divider"

@@ -1,29 +1,21 @@
 package com.baikaleg.v3.popularmovies2.utils;
 
-import android.content.Context;
-import android.content.Intent;
 import android.databinding.BindingAdapter;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
-import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import com.baikaleg.v3.popularmovies2.BR;
 import com.baikaleg.v3.popularmovies2.R;
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.data.model.Review;
 import com.baikaleg.v3.popularmovies2.data.model.Trailer;
-import com.baikaleg.v3.popularmovies2.ui.details.adapter.ReviewPagerAdapter;
+import com.baikaleg.v3.popularmovies2.ui.details.reviews.ReviewPagerAdapter;
+import com.baikaleg.v3.popularmovies2.ui.details.trailers.TrailerViewAdapter;
 import com.baikaleg.v3.popularmovies2.ui.movies.MoviesViewModel;
 import com.baikaleg.v3.popularmovies2.ui.movies.adapter.MoviesViewAdapter;
 import com.squareup.picasso.Picasso;
@@ -36,9 +28,6 @@ import java.util.List;
  * {@link Trailer} items to a ViewGroup.
  */
 public class MoviesBindingUtil {
-    private static final String TAG = MoviesBindingUtil.class.getSimpleName();
-    private static final String VIDEO_SOURCE = "YouTube";
-
     /**
      * Prevent instantiation
      */
@@ -99,31 +88,11 @@ public class MoviesBindingUtil {
 
 
     @SuppressWarnings("unchecked")
-    @BindingAdapter({"app:trailers", "app:layout"})
-    public static void setTrailers(LinearLayout viewGroup, List<Trailer> trailers, int layoutId) {
-        viewGroup.removeAllViews();
-        if (layoutId == 0) {
-            return;
-        }
-        if (trailers != null) {
-            Context context = viewGroup.getContext();
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            for (int i = 0; i < trailers.size(); i++) {
-                Trailer trailer = trailers.get(i);
-                ViewDataBinding binding = DataBindingUtil
-                        .inflate(inflater, layoutId, viewGroup, false);
-                binding.setVariable(BR.data, trailer);
-                binding.getRoot().setOnClickListener(v -> {
-                    if (trailer.getSite().equals(VIDEO_SOURCE)) {
-                        Uri uri = Uri.parse(context.getString(R.string.youtube_base_url) + trailer.getKey());
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        context.startActivity(intent);
-                    } else {
-                        Log.i(TAG, context.getString(R.string.no_source));
-                    }
-                });
-                viewGroup.addView(binding.getRoot());
-            }
+    @BindingAdapter("app:trailers")
+    public static void setTrailers(RecyclerView recyclerView, List<Trailer> trailers) {
+        TrailerViewAdapter adapter = (TrailerViewAdapter) recyclerView.getAdapter();
+        if (adapter != null) {
+            adapter.refreshAdapter(trailers);
         }
     }
 }

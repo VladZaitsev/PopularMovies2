@@ -1,4 +1,4 @@
-package com.baikaleg.v3.popularmovies2.ui.details.adapter;
+package com.baikaleg.v3.popularmovies2.ui.details.reviews;
 
 import android.databinding.BaseObservable;
 import android.databinding.Observable;

@@ -4,7 +4,6 @@ import android.support.annotation.Nullable;
 
 import com.baikaleg.v3.popularmovies2.MovieViewModel;
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
-import com.baikaleg.v3.popularmovies2.ui.movies.MovieItemNavigator;
 
 import java.lang.ref.WeakReference;
 

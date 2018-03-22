@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import com.baikaleg.v3.popularmovies2.R;
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.databinding.ItemMoviesBinding;
-import com.baikaleg.v3.popularmovies2.ui.movies.MovieItemNavigator;
 
 import java.util.ArrayList;
 import java.util.List;

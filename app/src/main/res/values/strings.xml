@@ -5,7 +5,8 @@
     <!-- urls-->
     <string name="base_url" translatable="false">https://api.themoviedb.org/3/movie/</string>
     <string name="image_base_url" translatable="false">https://image.tmdb.org/t/p/w185</string>
-    <string name="youtube_base_url" translatable="false">"http://www.youtube.com/watch?v="</string>
+    <string name="youtube_base_url" translatable="false">http://www.youtube.com/watch?v=</string>
+    <string name="trailer_thumbnail_url" translatable="false">http://img.youtube.com/vi/%1$s/mqdefault.jpg</string>
 
     <!-- screen titles-->
     <string name="popular">Popular Movies</string>
@@ -20,6 +21,7 @@
     <string name="cd_to_right">Scroll to right</string>
     <string name="cd_expand">Expanding or reducing of reviews</string>
     <string name="cd_rating">Rating</string>
+    <string name="cd_trailer">Trailer</string>
 
     <!-- keys-->
     <string name="type_movies_key" translatable="false">movies_type</string>

@@ -20,6 +20,7 @@ import com.baikaleg.v3.popularmovies2.dagger.scopes.ActivityScoped;
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.databinding.FragmentMoviesBinding;
 import com.baikaleg.v3.popularmovies2.ui.details.DetailsActivity;
+import com.baikaleg.v3.popularmovies2.ui.movies.adapter.MovieItemNavigator;
 import com.baikaleg.v3.popularmovies2.ui.movies.adapter.MoviesViewAdapter;
 
 import javax.inject.Inject;
@@ -54,6 +55,7 @@ public class MoviesFragment extends DaggerFragment implements MovieItemNavigator
     @Override
     public void onDestroy() {
         viewAdapter.onDestroy();
+
         super.onDestroy();
     }
 

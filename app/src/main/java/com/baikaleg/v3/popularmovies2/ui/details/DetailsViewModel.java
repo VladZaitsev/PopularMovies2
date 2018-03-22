@@ -26,7 +26,6 @@ import io.reactivex.schedulers.Schedulers;
 
 @ActivityScoped
 public class DetailsViewModel extends MovieViewModel {
-
     private static final String TAG = DetailsViewModel.class.getSimpleName();
 
     private DetailModelNavigator navigator;
@@ -41,7 +40,7 @@ public class DetailsViewModel extends MovieViewModel {
 
     public final ObservableField<Integer> currentPagerPage = new ObservableField<>(0);
 
-    private int  mainViewHeight;
+    private int mainViewHeight;
 
     private final Repository repository;
 
@@ -79,12 +78,7 @@ public class DetailsViewModel extends MovieViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(trailers -> {
                     trailersList.clear();
-                    for (int i = 0; i < trailers.size(); i++) {
-                        Trailer trailer = trailers.get(i);
-                        int count = i + 1;
-                        trailer.setOrdinalName(context.getString(R.string.ordinalTrailerName) + count);
-                        trailersList.add(trailer);
-                    }
+                    trailersList.addAll(trailers);
                     notifyChange();
                 }, throwable -> Log.i(TAG, throwable.getMessage()));
     }

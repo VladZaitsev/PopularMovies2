@@ -43,7 +43,7 @@ public class MoviesViewModel extends BaseObservable {
         setFiltering(MoviesFilterType.POPULAR_MOVIES);
     }
 
-    public void start() {
+    void start() {
         loadMovies(false);
     }
 

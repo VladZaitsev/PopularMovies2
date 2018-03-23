@@ -28,7 +28,8 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/details_top_margin">
 
             <ImageView
                 android:id="@+id/details_main_img"
@@ -211,7 +212,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginBottom="@dimen/details_top_margin"
                 android:visibility="@{viewmodel.reviewsList.size()==0||viewmodel.reviewsList==null||viewmodel.dataLoading?View.GONE: View.VISIBLE}"
                 app:layout_constraintTop_toBottomOf="@+id/detail_pager_divider">
 

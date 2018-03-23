@@ -8,9 +8,9 @@ import com.baikaleg.v3.popularmovies2.databinding.ItemMoviesBinding;
 
 public class MoviesViewHolder extends RecyclerView.ViewHolder {
 
-    public final ItemMoviesBinding binding;
+    final ItemMoviesBinding binding;
 
-    public MoviesViewHolder(View itemView) {
+    MoviesViewHolder(View itemView) {
         super(itemView);
         binding = DataBindingUtil.bind(itemView);
     }

@@ -1,6 +1,5 @@
 package com.baikaleg.v3.popularmovies2.ui.details.trailers;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

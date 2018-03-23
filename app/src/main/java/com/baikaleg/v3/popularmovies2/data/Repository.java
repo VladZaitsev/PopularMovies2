@@ -99,20 +99,18 @@ public class Repository implements MovieDataSource {
 
     @SuppressLint("StaticFieldLeak")
     @Override
-    public void markMovieAsFavorite(Movie movie, boolean favorite) {
+    public void markMovieAsFavorite(Movie movie) {
         Uri uri = MovieContract.MovieEntry.CONTENT_URI;
         String remotePath = context.getString(R.string.image_base_url);
         String localPath = (new File(Environment.getExternalStorageDirectory(), context.getPackageName())).getPath();
-        if (favorite) {
-            String imageName = movie.getPosterPath().replace(remotePath+"/", "");
-            movieApi.createService(remotePath+"/")
+        if (movie.getFavorite() == 1) {
+            String imageName = movie.getPosterPath().replace(remotePath + "/", "");
+            movieApi.createService(remotePath + "/")
                     .downloadImage(imageName)
                     .flatMap(responseBodyResponse -> saveToDisk(responseBodyResponse, imageName))
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(file -> {
                         movie.setPosterPath(file.getPath());
-                        movie.setFavorite(1);
 
                         //Do in memory cache update to keep the app UI up to date
                         if (cachedMovies == null) {
@@ -128,8 +126,6 @@ public class Repository implements MovieDataSource {
             //deleting image from local storage
             deleteImage(movie.getPosterPath());
 
-            // unmarking as favorite
-            movie.setFavorite(0);
             //changing image path to internet url
             movie.setPosterPath(remotePath + imageName);
 

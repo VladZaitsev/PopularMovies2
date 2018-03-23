@@ -1,21 +1,17 @@
 package com.baikaleg.v3.popularmovies2.ui.details;
 
-import android.content.Context;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
 import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.baikaleg.v3.popularmovies2.BR;
 import com.baikaleg.v3.popularmovies2.MovieViewModel;
-import com.baikaleg.v3.popularmovies2.R;
 import com.baikaleg.v3.popularmovies2.dagger.scopes.ActivityScoped;
 import com.baikaleg.v3.popularmovies2.data.Repository;
-import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.data.model.Review;
 import com.baikaleg.v3.popularmovies2.data.model.Trailer;
 
@@ -30,8 +26,6 @@ public class DetailsViewModel extends MovieViewModel {
 
     private DetailModelNavigator navigator;
 
-    public final ObservableInt trailerLayout = new ObservableInt(R.layout.item_trailer);
-
     public final ObservableList<Review> reviewsList = new ObservableArrayList<>();
 
     public final ObservableList<Trailer> trailersList = new ObservableArrayList<>();
@@ -44,13 +38,10 @@ public class DetailsViewModel extends MovieViewModel {
 
     private final Repository repository;
 
-    private final Context context;
-
     @Inject
-    public DetailsViewModel(Repository repository, Context context) {
+    public DetailsViewModel(Repository repository) {
         super();
         this.repository = repository;
-        this.context = context;
     }
 
     void onDestroyed() {
@@ -104,11 +95,10 @@ public class DetailsViewModel extends MovieViewModel {
 
     public void setFavorite(boolean favorite) {
         this.favorite.set(favorite);
-
-        Movie movie = movieObservable.get();
-        repository.markMovieAsFavorite(movie, favorite);
-
         notifyPropertyChanged(BR.favorite);
+
+        movieObservable.get().setFavorite(favorite ? 1 : 0);
+        repository.markMovieAsFavorite(movieObservable.get());
     }
 
     @Bindable

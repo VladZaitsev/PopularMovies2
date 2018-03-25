@@ -1,11 +1,16 @@
 package com.baikaleg.v3.popularmovies2.ui.details;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableList;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.baikaleg.v3.popularmovies2.BR;
@@ -37,11 +42,13 @@ public class DetailsViewModel extends MovieViewModel {
     private int mainViewHeight;
 
     private final Repository repository;
+    private final Context context;
 
     @Inject
-    public DetailsViewModel(Repository repository) {
+    public DetailsViewModel(Repository repository, Context context) {
         super();
         this.repository = repository;
+        this.context = context;
     }
 
     void onDestroyed() {
@@ -94,11 +101,26 @@ public class DetailsViewModel extends MovieViewModel {
     }
 
     public void setFavorite(boolean favorite) {
-        this.favorite.set(favorite);
-        notifyPropertyChanged(BR.favorite);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+                navigator.onExternalStoragePermissionRequest();
+            } else {
+                this.favorite.set(favorite);
+                notifyPropertyChanged(BR.favorite);
 
-        movieObservable.get().setFavorite(favorite ? 1 : 0);
-        repository.markMovieAsFavorite(movieObservable.get());
+                movieObservable.get().setFavorite(favorite ? 1 : 0);
+                repository.markMovieAsFavorite(movieObservable.get());
+            }
+        }else {
+            this.favorite.set(favorite);
+            notifyPropertyChanged(BR.favorite);
+
+            movieObservable.get().setFavorite(favorite ? 1 : 0);
+            repository.markMovieAsFavorite(movieObservable.get());
+        }
     }
 
     @Bindable

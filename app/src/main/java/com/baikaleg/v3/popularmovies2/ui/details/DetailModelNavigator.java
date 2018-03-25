@@ -6,4 +6,6 @@ package com.baikaleg.v3.popularmovies2.ui.details;
 public interface DetailModelNavigator {
 
     void onExpandReviewPager(boolean expanded);
+
+    void onExternalStoragePermissionRequest();
 }

@@ -31,6 +31,8 @@
     <string name="no_movies">No movies</string>
     <string name="no_internet">No internet connection</string>
     <string name="no_source">Unknown source</string>
+    <string name="msg_did_not_allow_writing">You did not allow save movies to your device</string>
+    <string name="msg_did_not_allow_reading">You did not allow save movies to your device</string>
 
     <string name="vote_average">%1$s/10</string>
     <string name="overview">Overview</string>
@@ -38,5 +40,6 @@
     <string name="review_header">Reviews (%1$s/%2$s)</string>
     <string name="ordinalTrailerName">Trailer #</string>
     <string name="release_date">Release date:</string>
+
 
 </resources>

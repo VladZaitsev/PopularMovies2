@@ -3,10 +3,13 @@ package com.baikaleg.v3.popularmovies2.ui.movies;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,6 +42,8 @@ public class MoviesFragment extends DaggerFragment implements MovieItemNavigator
 
     private int rows, columns;
 
+    private FragmentMoviesBinding binding;
+
     @Inject
     MoviesViewModel moviesViewModel;
 
@@ -55,7 +60,6 @@ public class MoviesFragment extends DaggerFragment implements MovieItemNavigator
     @Override
     public void onDestroy() {
         viewAdapter.onDestroy();
-
         super.onDestroy();
     }
 
@@ -65,18 +69,18 @@ public class MoviesFragment extends DaggerFragment implements MovieItemNavigator
         setHasOptionsMenu(true);
         setRowsAndColumnsQuantity();
 
-
-        FragmentMoviesBinding binding = FragmentMoviesBinding.inflate(inflater, container, false);
+        binding = FragmentMoviesBinding.inflate(inflater, container, false);
         binding.setViewmodel(moviesViewModel);
         binding.setView(this);
 
         LinearLayoutManager layoutManager = new GridLayoutManager(getActivity().getApplicationContext(), columns);
-
-        viewAdapter = createAdapter();
-
-        binding.moviesRv.setAdapter(viewAdapter);
         binding.moviesRv.setLayoutManager(layoutManager);
 
+        viewAdapter = createAdapter();
+        if (savedInstanceState != null && savedInstanceState.containsKey(getString(R.string.position_key))) {
+            viewAdapter.setPositionToScroll(savedInstanceState.getInt(getString(R.string.position_key)));
+        }
+        binding.moviesRv.setAdapter(viewAdapter);
         binding.moviesRefresh.setColorSchemeColors(
                 ContextCompat.getColor(getActivity(), R.color.colorPrimary),
                 ContextCompat.getColor(getActivity(), R.color.colorAccent),
@@ -107,6 +111,7 @@ public class MoviesFragment extends DaggerFragment implements MovieItemNavigator
                 moviesViewModel.setFiltering(MoviesFilterType.FAVORITE_MOVIES);
                 break;
         }
+        viewAdapter.setPositionToScroll(0);
         moviesViewModel.loadMovies(true);
         return true;
     }
@@ -121,7 +126,7 @@ public class MoviesFragment extends DaggerFragment implements MovieItemNavigator
         int imageHeight = (getResources().getDisplayMetrics().heightPixels - actionBarHeight) / rows;
         int imageWidth = getResources().getDisplayMetrics().widthPixels / columns;
 
-        MoviesViewAdapter adapter = new MoviesViewAdapter(this);
+        MoviesViewAdapter adapter = new MoviesViewAdapter(this, binding.moviesRv);
         adapter.setViewSize(imageWidth, imageHeight);
         return adapter;
     }
@@ -133,6 +138,12 @@ public class MoviesFragment extends DaggerFragment implements MovieItemNavigator
         startActivity(intent);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(getString(R.string.position_key),
+                ((LinearLayoutManager) binding.moviesRv.getLayoutManager()).findFirstVisibleItemPosition());
+    }
 
     private void setRowsAndColumnsQuantity() {
         if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -143,5 +154,4 @@ public class MoviesFragment extends DaggerFragment implements MovieItemNavigator
             columns = getResources().getInteger(R.integer.columns_landscape_mode);
         }
     }
-
 }

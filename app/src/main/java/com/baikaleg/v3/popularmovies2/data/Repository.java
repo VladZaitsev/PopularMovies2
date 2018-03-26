@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 
+import com.baikaleg.v3.popularmovies2.BuildConfig;
 import com.baikaleg.v3.popularmovies2.R;
 import com.baikaleg.v3.popularmovies2.data.model.Movie;
 import com.baikaleg.v3.popularmovies2.data.model.Review;
@@ -33,7 +34,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import okio.BufferedSink;
@@ -42,7 +42,8 @@ import retrofit2.Response;
 
 @Singleton
 public class Repository implements MovieDataSource {
-
+    private final static String popular_movies = "popular";
+    private final static String top_rated_movies = "top_rated";
     private final Context context;
     private final MovieApi movieApi;
     private boolean cacheIsDirty = false;
@@ -73,9 +74,9 @@ public class Repository implements MovieDataSource {
         }
 
         if (type == MoviesFilterType.POPULAR_MOVIES) {
-            return getPopularMovies();
+            return getMovies(popular_movies);
         } else if (type == MoviesFilterType.TOP_RATED_MOVIES) {
-            return getTopRatedMovies();
+            return getMovies(top_rated_movies);
         } else if (type == MoviesFilterType.FAVORITE_MOVIES) {
             return getFavoriteMovies();
         }
@@ -85,7 +86,7 @@ public class Repository implements MovieDataSource {
     @Override
     public Observable<List<Review>> getReviews(int id) {
         return movieApi.createService(context.getString(R.string.base_url))
-                .getMovieReviews(id)
+                .getMovieReviews(id, BuildConfig.API_KEY)
                 .map(ReviewsResponse::getReviews)
                 .toObservable();
     }
@@ -93,7 +94,7 @@ public class Repository implements MovieDataSource {
     @Override
     public Observable<List<Trailer>> getTrailers(int id) {
         return movieApi.createService(context.getString(R.string.base_url))
-                .getTrailers(id)
+                .getTrailers(id, BuildConfig.API_KEY)
                 .map(TrailersResponse::getTrailers);
     }
 
@@ -106,7 +107,7 @@ public class Repository implements MovieDataSource {
         if (movie.getFavorite() == 1) {
             String imageName = movie.getPosterPath().replace(remotePath + "/", "");
             movieApi.createService(remotePath + "/")
-                    .downloadImage(imageName)
+                    .downloadImage(imageName, BuildConfig.API_KEY)
                     .flatMap(responseBodyResponse -> saveToDisk(responseBodyResponse, imageName))
                     .subscribeOn(Schedulers.io())
                     .subscribe(file -> {
@@ -146,35 +147,9 @@ public class Repository implements MovieDataSource {
         cacheIsDirty = true;
     }
 
-    private Observable<List<Movie>> getPopularMovies() {
+    private Observable<List<Movie>> getMovies(String sortBy) {
         return movieApi.createService(context.getString(R.string.base_url))
-                .getPopularMovies()
-                .map(MoviesResponse::getMovies)
-                .flatMap(movies -> Observable.fromIterable(movies)
-                        .doOnNext(movie -> {
-                            String path = context.getString(R.string.image_base_url) + movie.getPosterPath();
-                            movie.setPosterPath(path);
-                            //Find out if movie was marked as favorite
-                            String selection = MovieEntry.ID + " = ?";
-                            String[] selectionArgs = new String[]{String.valueOf(movie.getId())};
-                            try (Cursor cursor = queryMovies(selection, selectionArgs)) {
-                                if (cursor.getCount() != 0) {
-                                    cursor.moveToFirst();
-                                    String localPosterPath = cursor.getString(cursor.getColumnIndex(MovieEntry.POSTER_PATH));
-                                    movie.setFavorite(1);
-                                    movie.setPosterPath(localPosterPath);
-                                }
-                            }
-                            cachedMovies.put(movie.getId(), movie);
-                        })
-                        .toList()
-                        .toObservable()
-                );
-    }
-
-    private Observable<List<Movie>> getTopRatedMovies() {
-        return movieApi.createService(context.getString(R.string.base_url))
-                .getTopRatedMovies()
+                .getMovies(sortBy, BuildConfig.API_KEY)
                 .map(MoviesResponse::getMovies)
                 .flatMap(movies -> Observable.fromIterable(movies)
                         .doOnNext(movie -> {

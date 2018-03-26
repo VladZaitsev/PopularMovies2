@@ -18,10 +18,12 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewHolder> {
     private MovieItemNavigator itemNavigator;
     private int viewHeight;
     private int viewWidth;
+    private RecyclerView recyclerView;
+    private int positionToScroll = 0;
 
-
-    public MoviesViewAdapter(MovieItemNavigator itemNavigator) {
+    public MoviesViewAdapter(MovieItemNavigator itemNavigator, RecyclerView recyclerView) {
         this.itemNavigator = itemNavigator;
+        this.recyclerView = recyclerView;
     }
 
     @Override
@@ -52,6 +54,7 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewHolder> {
         this.movies.clear();
         this.movies.addAll(movies);
         notifyDataSetChanged();
+        recyclerView.scrollToPosition(positionToScroll);
     }
 
     public void onDestroy() {
@@ -61,5 +64,9 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewHolder> {
     public void setViewSize(int viewWidth, int viewHeight) {
         this.viewHeight = viewHeight;
         this.viewWidth = viewWidth;
+    }
+
+    public void setPositionToScroll(int positionToScroll) {
+        this.positionToScroll = positionToScroll;
     }
 }

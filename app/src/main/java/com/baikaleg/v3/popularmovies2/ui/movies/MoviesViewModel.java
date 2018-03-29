@@ -21,6 +21,7 @@ import io.reactivex.schedulers.Schedulers;
 
 @ActivityScoped
 public class MoviesViewModel extends BaseObservable {
+    private MoviesNavigator navigator;
 
     public final ObservableList<Movie> items = new ObservableArrayList<>();
 
@@ -44,7 +45,36 @@ public class MoviesViewModel extends BaseObservable {
     }
 
     void start() {
-        loadMovies(false);
+        loadMovies(false, false);
+    }
+
+    public void loadMovies(final boolean forceUpdate, final boolean isRefreshed) {
+        if (isRefreshed) {
+            navigator.onRefresh();
+        }
+        loadMovies(forceUpdate);
+    }
+
+    private void loadMovies(final boolean forceUpdate) {
+        dataLoading.set(true);
+
+        if (forceUpdate) {
+            repository.refreshMovies();
+        }
+
+        compositeDisposable.clear();
+        Disposable disposable = repository.getMovies(currentFilterType)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(movies -> {
+                    dataLoading.set(false);
+                    isDataLoadingError.set(false);
+                    items.clear();
+                    items.addAll(movies);
+                    notifyPropertyChanged(BR.empty);
+                }, throwable -> showError());
+
+        compositeDisposable.add(disposable);
     }
 
     @Bindable
@@ -72,39 +102,13 @@ public class MoviesViewModel extends BaseObservable {
         return currentFilterType;
     }
 
-    public void loadMovies(final boolean forceUpdate) {
-        loadMovies(forceUpdate, true);
-    }
-
-    private void loadMovies(final boolean forceUpdate, final boolean showLoadingUI) {
-        if (showLoadingUI) {
-            dataLoading.set(true);
-        }
-
-        if (forceUpdate) {
-            repository.refreshMovies();
-        }
-
-        compositeDisposable.clear();
-        Disposable disposable = repository.getMovies(currentFilterType)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movies -> {
-                    if (showLoadingUI) {
-                        dataLoading.set(false);
-                    }
-                    isDataLoadingError.set(false);
-                    items.clear();
-                    items.addAll(movies);
-                    notifyPropertyChanged(BR.empty);
-                }, throwable -> showError());
-
-        compositeDisposable.add(disposable);
-    }
-
     private void showError() {
         dataLoading.set(false);
         isDataLoadingError.set(true);
         notifyPropertyChanged(BR.empty);
+    }
+
+    void setNavigator(MoviesNavigator navigator) {
+        this.navigator = navigator;
     }
 }

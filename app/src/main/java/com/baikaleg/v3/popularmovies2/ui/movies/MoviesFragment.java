@@ -5,11 +5,9 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +35,9 @@ import dagger.android.support.DaggerFragment;
  */
 @ActivityScoped
 public class MoviesFragment extends DaggerFragment implements MovieItemNavigator {
+    private final String KEY_RECYCLER_STATE = "recycler_state";
+
+    private static Bundle bundleRecyclerViewState;
 
     private MoviesViewAdapter viewAdapter;
 
@@ -52,8 +53,20 @@ public class MoviesFragment extends DaggerFragment implements MovieItemNavigator
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        bundleRecyclerViewState = new Bundle();
+        Parcelable listState = binding.moviesRv.getLayoutManager().onSaveInstanceState();
+        bundleRecyclerViewState.putParcelable(KEY_RECYCLER_STATE, listState);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
+        if (bundleRecyclerViewState != null) {
+            Parcelable listState = bundleRecyclerViewState.getParcelable(KEY_RECYCLER_STATE);
+            viewAdapter.setRecyclerViewState(listState);
+        }
         moviesViewModel.start();
     }
 
@@ -72,21 +85,22 @@ public class MoviesFragment extends DaggerFragment implements MovieItemNavigator
         binding = FragmentMoviesBinding.inflate(inflater, container, false);
         binding.setViewmodel(moviesViewModel);
         binding.setView(this);
-
+        moviesViewModel.setNavigator(() -> viewAdapter.setRecyclerViewState(null));
         LinearLayoutManager layoutManager = new GridLayoutManager(getActivity().getApplicationContext(), columns);
         binding.moviesRv.setLayoutManager(layoutManager);
 
         viewAdapter = createAdapter();
-        if (savedInstanceState != null && savedInstanceState.containsKey(getString(R.string.position_key))) {
-            viewAdapter.setPositionToScroll(savedInstanceState.getInt(getString(R.string.position_key)));
-        }
+
         binding.moviesRv.setAdapter(viewAdapter);
         binding.moviesRefresh.setColorSchemeColors(
                 ContextCompat.getColor(getActivity(), R.color.colorPrimary),
                 ContextCompat.getColor(getActivity(), R.color.colorAccent),
                 ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
         );
-
+        if (savedInstanceState != null) {
+            Parcelable listState = savedInstanceState.getParcelable(KEY_RECYCLER_STATE);
+            viewAdapter.setRecyclerViewState(listState);
+        }
         return binding.getRoot();
     }
 
@@ -111,8 +125,7 @@ public class MoviesFragment extends DaggerFragment implements MovieItemNavigator
                 moviesViewModel.setFiltering(MoviesFilterType.FAVORITE_MOVIES);
                 break;
         }
-        viewAdapter.setPositionToScroll(0);
-        moviesViewModel.loadMovies(true);
+        moviesViewModel.loadMovies(true, true);
         return true;
     }
 
@@ -141,8 +154,8 @@ public class MoviesFragment extends DaggerFragment implements MovieItemNavigator
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(getString(R.string.position_key),
-                ((LinearLayoutManager) binding.moviesRv.getLayoutManager()).findFirstVisibleItemPosition());
+        outState.putParcelable(KEY_RECYCLER_STATE,
+                binding.moviesRv.getLayoutManager().onSaveInstanceState());
     }
 
     private void setRowsAndColumnsQuantity() {

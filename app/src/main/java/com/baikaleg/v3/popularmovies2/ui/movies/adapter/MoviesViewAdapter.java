@@ -1,6 +1,7 @@
 package com.baikaleg.v3.popularmovies2.ui.movies.adapter;
 
 import android.databinding.DataBindingUtil;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,7 +20,7 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewHolder> {
     private int viewHeight;
     private int viewWidth;
     private RecyclerView recyclerView;
-    private int positionToScroll = 0;
+    private Parcelable state;
 
     public MoviesViewAdapter(MovieItemNavigator itemNavigator, RecyclerView recyclerView) {
         this.itemNavigator = itemNavigator;
@@ -53,8 +54,12 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewHolder> {
     public void refreshAdapter(@NonNull List<Movie> movies) {
         this.movies.clear();
         this.movies.addAll(movies);
+        if(state==null){
+            recyclerView.scrollToPosition(0);
+        }else {
+            recyclerView.getLayoutManager().onRestoreInstanceState(state);
+        }
         notifyDataSetChanged();
-        recyclerView.scrollToPosition(positionToScroll);
     }
 
     public void onDestroy() {
@@ -66,7 +71,7 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewHolder> {
         this.viewWidth = viewWidth;
     }
 
-    public void setPositionToScroll(int positionToScroll) {
-        this.positionToScroll = positionToScroll;
+    public void setRecyclerViewState(Parcelable state) {
+        this.state = state;
     }
 }
